@@ -35,11 +35,6 @@
       "name": "Community",
       "icon": "discord",
       "url": "https://discord.gg/zqXEzmhT"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
     }
   ],
   "navigation": [
