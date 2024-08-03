@@ -7,14 +7,18 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#007bff",
+    "light": "#87CEEB",
+    "dark": "#0056b3",
+    "background": {
+      "dark": "#000000"
+    },
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#007bff",
+      "to": "#007bff"
     }
   },
+  "theme": "prism",
   "topbarLinks": [
     {
       "name": "Support",
@@ -70,5 +74,9 @@
     "x": "https://x.com/mintlify",
     "github": "https://github.com/mintlify",
     "linkedin": "https://www.linkedin.com/company/mintsearch"
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true
   }
 }
