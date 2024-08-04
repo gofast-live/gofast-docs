@@ -26,15 +26,17 @@ You will need to code.
 
 ## Philosophy
 
-- We believe that combining a robust backend language with a powerful frontend framework is the best approach.
+- We believe that combining a robust backend language with a powerful frontend framework is the way to go.
 - The backbone of the app is Go, which handles all the important logic. Why Go?
     - Go is a simple language with exceptional performance.
     - Due to Go's straightforward nature, there aren't countless ways to do things, making code review and consistency much easier.
     - One of its undervalued strengths is its ease of introduction to new programmers.
     - Go has an amazing set of native libraries.
+    - Errors as values are amazing.
 - For the frontend, we advocate for SvelteKit, but we also recognize the value and popularity of Next.js. 
 In both cases, we keep up with the newest versions and follow proposed approaches (SSR, Form Actions, Server Actions).
-- Minimize external dependencies: This enhances code maintainability and simplifies long-term changes. It's the way to go. Our dependencies are so few that we will list them:
+- Minimize external dependencies: This enhances code maintainability and simplifies long-term changes. It's the way to go. It will make your life simpler.  
+Our dependencies are so few that we will just list them:
     - Library for gRPC implementation
     - Library for logging
     - Library for JWT
@@ -42,7 +44,7 @@ In both cases, we keep up with the newest versions and follow proposed approache
     - OAuth library
     - Files provider libraries
     - Payments provider libraries
-    - TailwindCSS + Floating-UI
+    - TailwindCSS + Floating-UI  
 And that's all. No Go HTTP library, no UI library, you don't need them.
 
 ## Setting up
