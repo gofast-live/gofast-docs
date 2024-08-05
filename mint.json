@@ -47,6 +47,17 @@
       "pages": ["introduction", "quickstart", "development"]
     },
     {
+      "group": "Configuration",
+      "pages": [
+        "configuration/protocol",
+        "configuration/frontend",
+        "configuration/oauth",
+        "configuration/payments",
+        "configuration/emails",
+        "configuration/files"
+      ]
+    },
+    {
       "group": "Essentials",
       "pages": [
         "essentials/markdown",
