@@ -33,6 +33,7 @@ GoFast is powered by the CLI that will guide you through the configuration:
 - Payments with webhooks using Stripe (Paddle and Lemon Squeezy in the way)
 - Emails sending using Postmark, Sengrid or Resend
 - Files storage using Cloudflare R2, AWS S3 or Google Cloud Storage
+- Grafana Loki + Prometheus
 
 ## Philosophy
 
@@ -43,11 +44,11 @@ GoFast is powered by the CLI that will guide you through the configuration:
     - One of its undervalued strengths is its ease of introduction to new programmers.
     - Go has an amazing set of native libraries.
     - Errors as values are amazing.
+- We primarily use Dependency Injection and the Strategy Pattern, keeping abstractions to a minimum. Always go for simplicity.
 - For the frontend, we advocate for SvelteKit, but we also recognize the value and popularity of Next.js.
 In both cases, we keep up with the newest versions and follow proposed approaches (SSR, Form Actions, Server Actions).
-- We primarily use Dependency Injection and the Strategy Pattern, keeping abstractions to a minimum. Always go for simplicity.
 - Minimize external dependencies: This enhances code maintainability and simplifies long-term changes. It's the way to go. It will make your life simpler. 
-Our dependencies are so few that we will just list them:
+In fact our dependencies are so few that we will just list them:
     - Library for gRPC implementation
     - Library for logging
     - Library for JWT
@@ -55,34 +56,32 @@ Our dependencies are so few that we will just list them:
     - OAuth library
     - Files provider libraries
     - Payments provider libraries
-    - TailwindCSS + Floating-UI
+    - TailwindCSS
 
-And that's all. No Go HTTP library, no UI library, you don't need them.
-
-## Setting up
+## Let's get started
 
 The first step to world-class documentation is setting up your editing environments.
 
 <CardGroup cols={2}>
   <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
+    title="Install"
+    icon="screwdriver-wrench"
+    href="https://gofast.mintlify.app/quickstart"
   >
-    Get your docs set up locally for easy development
+    Let's get started
   </Card>
   <Card
     title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
+    icon="cli"
+    href="https://github.com/gofast-live/gofast-cli"
   >
-    Preview your changes before you push to make sure they're perfect
+    GoFast CLI
   </Card>
 </CardGroup>
 
-## Make it yours
+## Configuration
 
-Update your docs to your brand and add valuable content for the best user conversion.
+Choose excatly what you need
 
 <CardGroup cols={2}>
   <Card
