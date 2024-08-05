@@ -5,6 +5,12 @@ description: 'Start building awesome aplications in under 5 minutes'
 
 ## Install GoFast CLI
 
+Make sure you have the Go installed:
+
+https://go.dev/doc/install
+
+### Using Go
+
 ```bash
 go install github.com/gofast-live/gofast-cli/cmd/gofast@latest
 ```
@@ -14,6 +20,30 @@ Make sure that your `PATH` includes the Go bin directory. You can add it to your
 ```bash
 export PATH=$PATH:$(go env GOPATH)/bin
 ```
+
+### Downloading the binary
+
+ Linux
+
+```bash
+wget https://github.com/gofast-live/gofast-cli/releases/download/v0.0.4/gofast-linux-amd64 -O /usr/local/bin/gofast
+chmod +x /usr/local/bin/gofast
+```
+
+macOS
+
+```bash
+wget https://github.com/gofast-live/gofast-cli/releases/download/v0.0.4/gofast-darwin-amd64 -O /usr/local/bin/gofast
+chmod +x /usr/local/bin/gofast
+```
+
+Windows
+
+```bash
+curl -L -o gofast.exe https://github.com/gofast-live/gofast-cli/releases/download/v0.0.4/gofast-windows-amd64.exe
+move gofast.exe C:\Windows\System32
+```
+
 
 ### Edit and preview
 
