@@ -1,37 +1,27 @@
 ---
 title: 'Protocol'
-description: 'Display inline code and code blocks'
+description: 'Choose between HTTP and gRPC'
 icon: 'webhook'
 ---
 
-## Basic
+## Configuration
 
-### Inline Code
+This choice must be done using GoFast CLI. A few points to notice:
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+- HTTP implementation will remove all gRPC code, proto files and libraries.
+- gRPC implementation will still have some HTTP routes:
+    - One for payments webhook.
+    - Second for files functionality. gRPC is just not the best solution to handle file uploads and downloads.
 
-```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
+### gRPC generation
 
-### Code Block
+For gRPC implementation, all proto files are inside `proto` folder. After making any changes, we need to generate new types for both sever and client.
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
-
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+```bash
+sh proto.sh
 ```
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
+This script will take care of types generation, but it depends on two librabries, so make sure you have them globallly installed:
+
+- protoc
+- proto-loader-gen-types
