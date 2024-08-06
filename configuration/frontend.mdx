@@ -10,5 +10,6 @@ This choice must be done using GoFast CLI.
 
 - We heavly utilize SSR.
 - We keep the frameworks up to date.
-- We use the suggested approach, `Form Action` for SvelteKit and `Server Action` for NextJS.
-- The logic is extracted to `server/services` folder.
+- We use `Form Action` for SvelteKit and `Server Actions` for NextJS.
+- The logic is extracted to `server/services` folder. The route pages try to have as less logic as possible, only passing required paramters.
+- We strongly advocates for Component Composition pattern.
