@@ -4,9 +4,9 @@ description: 'Choose between Stripe, Lemon Squeezy, or Paddle'
 icon: 'credit-card'
 ---
 
-Configuration
+## Configuration
 
-The payments implementation can generate the client Checkout Session to process payments, the Customer Portal to check invoices, and includes a Webhook implementation to listen for changes.
+The payments implementation can generate the client *Checkout Session* to process payments, the *Customer Portal* to check invoices, and includes a *Webhook* implementation to listen for changes.
 The flow is as follows:
 
 1. The user clicks the subscribe button, sending a request to the backend.
@@ -14,3 +14,10 @@ The flow is as follows:
 3. The user completes the order.
 4. A webhook on the backend listens for changes and updates the client's status accordingly.
 5. After the client is created in the payment provider, they can visit their customer portal to check all invoices.
+
+To include more providers, follow these steps in the `payment/provider.go` file, which holds the logic:
+
+1. Add new secrets in the `env.go` file.
+2. Add the new provider to the Provider constant.
+3. Create a new provider struct.
+4. Add the required methods to the new struct.
