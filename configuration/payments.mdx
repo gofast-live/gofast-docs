@@ -1,5 +1,16 @@
 ---
 title: 'Payments'
-description: 'Choose between Stripe, Lemon'
-icon: 'bill'
+description: 'Choose between Stripe, Lemon Squeezy, or Paddle'
+icon: 'credit-card'
 ---
+
+Configuration
+
+The payments implementation can generate the client Checkout Session to process payments, the Customer Portal to check invoices, and includes a Webhook implementation to listen for changes.
+The flow is as follows:
+
+1. The user clicks the subscribe button, sending a request to the backend.
+2. The backend generates a Checkout URL.
+3. The user completes the order.
+4. A webhook on the backend listens for changes and updates the client's status accordingly.
+5. After the client is created in the payment provider, they can visit their customer portal to check all invoices.
