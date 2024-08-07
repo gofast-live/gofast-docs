@@ -6,22 +6,22 @@ icon: 'webhook'
 
 ## Configuration
 
-This choice must be done using GoFast CLI. A few points to notice:
+This choice must be made using the GoFast CLI.
 
 - HTTP implementation will remove all gRPC code, proto files and libraries.
 - gRPC implementation will still have some HTTP routes:
-    - One for payments webhook.
-    - Second for files functionality. gRPC is just not the best solution to handle file uploads and downloads.
+    - One for the payments webhook.
+    - Another for files functionality. gRPC is just not the best solution to handle file uploads and downloads.
 
 ### gRPC generation
 
-For gRPC implementation, all proto files are inside `proto` folder. After making any changes, we need to generate new types for both sever and client.
+For gRPC implementation, all proto files are inside the `proto` folder. After making any changes, we need to generate new types for both the server and client.
 
 ```bash
 sh proto.sh
 ```
 
-This script will take care of types generation, but it depends on two librabries, so make sure you have them globallly installed:
+This script will take care of type generation and propagation, but it depends on two libraries, so make sure you have them globally installed:
 
 - protoc
 - proto-loader-gen-types
