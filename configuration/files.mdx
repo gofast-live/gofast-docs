@@ -1,0 +1,16 @@
+---
+title: 'Files'
+description: 'Choose between Cloudfalre R2, AWS S3 and Google Cloud Storage'
+icon: 'files'
+---
+
+## Configuration
+
+To change the current provider, modify the `docker-compose.yml` file and add the corresponding secrets.
+
+To include more providers, follow these steps in the `file/provider.go` file, which holds the logic:
+
+1. Add the new provider to the `Provider` constant.
+2. Create a new provider struct.
+3. Add the required methods to the new struct.
+4. Add any new secrets in the `env.go` file.
