@@ -7,11 +7,38 @@ icon: 'right-to-bracket'
 ## Configuration
 
 The OAuth implementation does not depend on any external providers. It's built using the `golang.org/x/oauth2` library. 
-The base application already includes configurations for two providers: Google and GitHub.
+The base application already includes configurations for two providers: *Google* and *GitHub*.
 
-To include more providers, follow these steps in the oauth.go file, which holds the logic:
+To include more providers, follow these steps in the `oauth.go` file, which holds the logic:
 
-1. Add new secrets in the env.go file.
+1. Add new secrets in the `env.go` file.
 2. Add the new provider to the Provider constant.
 3. Create a new provider struct.
 4. Add the required methods to the new struct.
+
+Now on the frontend side all you need to do is create a new form with button and hidden input that holds the new provider name.
+
+SvelteKit:
+
+```ts
+<form action="?/login" method="post" on:submit|preventDefault={handleSubmit}>
+    <input type="hidden" name="provider" value="discord" />
+    <Button class="w-full">
+        <svelte:fragment slot="icon">
+            <DiscordIcon class="h-5 w-5" />
+        </svelte:fragment>
+        Continue with Discord
+    </Button>
+</form>
+```
+
+NextJS:
+
+```ts
+<form action={submit}>
+    <input type="hidden" name="provider" value="discord" />
+    <Button className="w-full" icon={<DiscordIcon className="h-5 w-5" />}>
+        Continue with Discord
+    </Button>
+</form>
+```
