@@ -7,7 +7,9 @@ icon: 'right-to-bracket'
 ## Configuration
 
 The OAuth implementation does not depend on any external providers. It's built using the `golang.org/x/oauth2` library. 
-The base application already includes configurations for two providers: **Google** and **GitHub**.
+The base application already includes configurations for two providers: **Google** and **GitHub**. 
+
+Remember that Magic Links require a working email provider.
 
 ### Backend
 
@@ -17,7 +19,6 @@ To include more providers, follow these steps in the `oauth.go` file, which hold
 2. Add the new provider to the Provider constant.
 3. Create a new provider struct.
 4. Add the required methods to the new struct.
-
 
 ### Frontend
 
