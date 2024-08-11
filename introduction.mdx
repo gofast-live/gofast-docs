@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: 'Welcome to the GoFast!'
+description: 'Welcome to the GoFast Beta!'
 ---
 
 <img
@@ -18,69 +18,113 @@ description: 'Welcome to the GoFast!'
 
 The Ultimate Foundation for High-Performance, Scalable Web Applications with the Power of Golang and SvelteKit/Next.js.
 
-This is an opinioned skeleton that aims to help you build applications that will last.
+This is an opinionated skeleton designed to help you build durable and maintainable applications.
 
-This is not the next "template" one that includes 90% of thrash you will never use.
+This is not another "template" that includes 90% of the features you will never use.
 
 You will need to code.
 
-## Philisophy
+## What's included
 
-- We belive that a backend using Go and any frontened framework is the best commbination as of now:
-  - Go is super simple, very performant and have anmazing native libs.
+GoFast is powered by the CLI that will guide you through the configuration:
+- SvelteKit or NextJS
+- HTTP or gRPC
+- OAuth flow without any external provider + Magic Links
+- Payments with webhooks using Stripe (Paddle and Lemon Squeezy in the way)
+- Emails sending using Postmark, Sengrid, or Resend
+- Files storage using Cloudflare R2, AWS S3, or Google Cloud Storage
+- Grafana Loki + Prometheus
+- Full setup with Docker and Docker Compose + GitHub Actions for linting and testing
 
-## Setting up
+## Philosophy
 
-The first step to world-class documentation is setting up your editing environments.
+- We believe that combining a robust backend language with a powerful frontend framework is the way to go.
+- The backbone of the app is Go, which handles all the important logic. Why Go?
+    - Go is a simple language with exceptional performance.
+    - Due to Go's straightforward nature, there aren't countless ways to do things, making code review and consistency much easier.
+    - One of its undervalued strengths is its ease of introduction to new programmers.
+    - Go has an amazing set of native libraries.
+    - Errors as values are amazing.
+- We primarily use Dependency Injection and the Strategy Pattern, keeping abstractions to a minimum. Always go for simplicity.
+- For the frontend, we advocate for SvelteKit, but we also recognize the value and popularity of Next.js.
+In both cases, we keep up with the newest versions and follow proposed approaches (SSR, Form Actions, Server Actions).
+- Minimize external dependencies: This enhances code maintainability and simplifies long-term changes. It's the way to go. It will make your life simpler. 
+In fact our dependencies are so few that we will just list them:
+    - Library for gRPC implementation
+    - Library for logging
+    - Library for JWT
+    - Database drivers
+    - OAuth library
+    - Files provider libraries
+    - Payments provider libraries
+    - TailwindCSS
+
+## Let's get started
+
+Start using GoFast in just few clicks, run ana mazing CLI that wil lguide you through the configuration.
 
 <CardGroup cols={2}>
   <Card
-    title='Edit Your Docs'
-    icon='pen-to-square'
-    href='https://mintlify.com/docs/quickstart'
+    title="Quickstart"
+    icon="screwdriver-wrench"
+    href="/quickstart"
   >
-    Get your docs set up locally for easy development
+    Start building awesome aplications in under 5 minutes
   </Card>
   <Card
-    title='Preview Changes'
-    icon='image'
-    href='https://mintlify.com/docs/development'
+    title="GoFast CLI"
+    icon="terminal"
+    href="https://github.com/gofast-live/gofast-cli"
   >
-    Preview your changes before you push to make sure they're perfect
+    Checkout our powerful CLI
   </Card>
 </CardGroup>
 
-## Make it yours
+## Configuration
 
-Update your docs to your brand and add valuable content for the best user conversion.
+Choose excatly what you need
 
 <CardGroup cols={2}>
   <Card
-    title='Customize Style'
-    icon='palette'
-    href='https://mintlify.com/docs/settings/global'
+    title="Protocol"
+    icon="webhook"
+    href="/protocol"
   >
-    Customize your docs to your company's colors and brands
+    Choose between HTTP or gRPC implementation
   </Card>
   <Card
-    title='Reference APIs'
-    icon='code'
-    href='https://mintlify.com/docs/api-playground/openapi'
+    title="Frontend"
+    icon="browser"
+    href="/frontend"
   >
-    Automatically generate endpoints from an OpenAPI spec
+    Choose between SvelteKit or NextJS
   </Card>
   <Card
-    title='Add Components'
-    icon='screwdriver-wrench'
-    href='https://mintlify.com/docs/components/accordion'
+    title="OAuth"
+    icon="right-to-bracket"
+    href="/oauth"
   >
-    Build interactive features and designs to guide your users
+    Fully working OAuth flow without any external provider + Magic Links
   </Card>
   <Card
-    title='Get Inspiration'
-    icon='stars'
-    href='https://mintlify.com/customers'
+    title="Payments"
+    icon="credit-card"
+    href="/payments"
   >
-    Check out our showcase of our favorite documentation
+    Choose between Stripe, Lemon Squeezy, or Paddle
+  </Card>
+  <Card
+    title="Emails"
+    icon="envelope"
+    href="/emails"
+  >
+    Choose between Postmark, SendGrid, or Resend
+  </Card>
+  <Card
+    title="Files"
+    icon="files"
+    href="/files"
+  >
+    Choose between Cloudfalre R2, AWS S3, or Google Cloud Storage
   </Card>
 </CardGroup>
