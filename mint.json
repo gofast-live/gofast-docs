@@ -22,12 +22,12 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:admin@gofast.live"
+      "url": "mailto:support@gofast.live"
     }
   ],
   "topbarCtaButton": {
     "name": "Get Started",
-    "url": "https://gofast.live"
+    "url": "https://admin.gofast.live"
   },
   "anchors": [
     {
@@ -60,8 +60,8 @@
   ],
   "footerSocials": {
     "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "github": "https://github.com/gofast-live",
+    "discord": "https://discord.gg/hFqr2SuVXA"
   },
   "feedback": {
     "thumbsRating": true,
