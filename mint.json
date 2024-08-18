@@ -59,7 +59,7 @@
     },
     {
       "group": "Production",
-      "pages": ["configuration/self-hosted", "configuration/flyio"]
+      "pages": ["production/self-hosted", "production/flyio"]
     }
   ],
   "footerSocials": {
