@@ -56,6 +56,10 @@
         "configuration/emails",
         "configuration/files"
       ]
+    },
+    {
+      "group": "Production",
+      "pages": ["configuration/self-hosted", "configuration/flyio"]
     }
   ],
   "footerSocials": {
