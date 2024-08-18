@@ -49,8 +49,8 @@
     {
       "group": "Configuration",
       "pages": [
-        "configuration/protocol",
         "configuration/frontend",
+        "configuration/protocol",
         "configuration/oauth",
         "configuration/payments",
         "configuration/emails",
