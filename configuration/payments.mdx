@@ -24,6 +24,14 @@ To include more providers, follow these steps in the `payment/provider.go` file,
 3. Add the required methods to the new struct.
 4. Add any new secrets in the `env.go` file.
 
+## Test Stripe
+
+To test Stripe locally, don't forget to run a local test webhook command:
+
+```bash
+stripe listen --forward-to localhost:4002/payments/webhook
+```
+
 ## Where to find secrets?
 
 In progress...
