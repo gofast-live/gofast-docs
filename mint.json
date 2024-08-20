@@ -55,7 +55,8 @@
         "configuration/database",
         "configuration/payments",
         "configuration/emails",
-        "configuration/files"
+        "configuration/files",
+        "configuration/monitoring"
       ]
     },
     {
