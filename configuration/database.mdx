@@ -1,0 +1,21 @@
+---
+title: 'Database'
+description: 'Choose between PostgreSQL, Turso with Embedded Replicas, or SQLite'
+icon: 'database'
+---
+
+## Configuration
+
+To change the current provider, modify the `docker-compose.yml` file and add the corresponding secrets.
+
+To include more providers, follow these steps in the `/storage.go` file, which holds the logic:
+
+1. Add the new provider to the `Provider` constant.
+2. Create a new provider function that returns database driver and cleanup functions.
+3. Add any new secrets / database parameters in the `env.go` file.
+
+## Need help?
+
+Visit our discord server to ask any questions, make suggestions and give feedback :).
+
+https://discord.gg/hFqr2SuVXA

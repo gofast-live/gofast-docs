@@ -52,6 +52,7 @@
         "configuration/frontend",
         "configuration/protocol",
         "configuration/oauth",
+        "configuration/database",
         "configuration/payments",
         "configuration/emails",
         "configuration/files"
