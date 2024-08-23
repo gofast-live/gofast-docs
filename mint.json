@@ -51,8 +51,8 @@
       "pages": [
         "configuration/frontend",
         "configuration/protocol",
-        "configuration/oauth",
         "configuration/database",
+        "configuration/oauth",
         "configuration/payments",
         "configuration/emails",
         "configuration/files",

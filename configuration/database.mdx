@@ -14,9 +14,9 @@ To include more providers, follow these steps in the `/storage.go` file, which h
 2. Create a new provider function that returns database driver and cleanup functions.
 3. Add any new secrets / database parameters in the `env.go` file.
 
-## SQLite
+### SQLite
 
-The only environment variable required here is SQLITE_FILE, which points to the file location of the database.
+The only environment variable required here is `SQLITE_FILE`, which points to the file location of the database.
 
 This is also the default configuration when building the base project, with a modern setup:
 
@@ -38,11 +38,11 @@ This is more than enough for 90% of applications. For backups, you can use:
 sqlite3 local.db '.backup local.db.bak'
 ```
 
-## PostgreSQL
+### PostgreSQL
 
 In progress...
 
-## Turso with Embedded Replicas
+### Turso with Embedded Replicas
 
 In progress...
 
