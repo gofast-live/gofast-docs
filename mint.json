@@ -47,6 +47,14 @@
       "pages": ["introduction", "quickstart", "development"]
     },
     {
+      "group": "Guidelines",
+      "pages": [
+        "guidelines/go",
+        "guidelines/sveltekit",
+        "guidelines/nextjs",
+      ]
+    },
+    {
       "group": "Configuration",
       "pages": [
         "configuration/frontend",
