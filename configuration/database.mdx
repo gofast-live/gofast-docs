@@ -14,6 +14,39 @@ To include more providers, follow these steps in the `/storage.go` file, which h
 2. Create a new provider function that returns database driver and cleanup functions.
 3. Add any new secrets / database parameters in the `env.go` file.
 
+## SQLite
+
+The only environment variable required here is SQLITE_FILE, which points to the file location of the database.
+
+This is also the default configuration when building the base project, with a modern setup:
+
+```go
+var pragmas = []string{
+	"PRAGMA journal_mode = WAL;",
+	"PRAGMA foreign_keys = OFF;",
+	"PRAGMA synchronous = NORMAL;",
+	"PRAGMA temp_store = MEMORY;",
+	"PRAGMA auto_vacuum = INCREMENTAL;",
+	"PRAGMA cache_size = 10000;",
+	"PRAGMA cache = shared;",
+}
+```
+
+This is more than enough for 90% of applications. For backups, you can use:
+
+```bash
+sqlite3 local.db '.backup local.db.bak'
+```
+
+## PostgreSQL
+
+In progress...
+
+## Turso with Embedded Replicas
+
+In progress...
+
+
 ## Need help?
 
 Visit our discord server to ask any questions, make suggestions and give feedback :).
