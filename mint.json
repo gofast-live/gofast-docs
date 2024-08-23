@@ -51,7 +51,7 @@
       "pages": [
         "guidelines/go",
         "guidelines/sveltekit",
-        "guidelines/nextjs",
+        "guidelines/nextjs"
       ]
     },
     {
