@@ -40,7 +40,7 @@ sqlite3 local.db '.backup local.db.bak'
 
 ### PostgreSQL
 
-There are two settings for PostgreSQL, local and remote. Local one with set up a docker postgres on your machine. The remote will require a database connection parameters:
+There are two settings for PostgreSQL: local and remote. The local setting involves setting up a Docker PostgreSQL instance on your machine, while the remote setting requires database connection parameters.
 
 ```bash
     POSTGRES_HOST: ${POSTGRES_HOST}
@@ -52,7 +52,13 @@ There are two settings for PostgreSQL, local and remote. Local one with set up a
 
 ### Turso with Embedded Replicas
 
-In progress...
+For Turso, first log in and create a database:
+
+https://app.turso.tech/
+
+You need two environment variables, `TURSO_URL` and `TURSO_TOKEN`, both of which can be found here:
+
+![Turso Secrets](/images/turso.jpeg)
 
 ## Need help?
 
