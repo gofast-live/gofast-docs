@@ -65,7 +65,6 @@
         "guidelines/go",
         "guidelines/sveltekit",
         "guidelines/nextjs",
-        "guidelines/validations",
         "guidelines/errors"
       ]
     },
