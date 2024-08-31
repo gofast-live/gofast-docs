@@ -16,4 +16,8 @@ icon: 'list-check'
 
 ## SvelteKit / NextJS
 
-1. 
+1. We use a wrapper around `try / catch` that forces you to handle errors. It aims to mimic what Go or Rust do (tries, JS error handling sucks).
+2. The wrapper is called `Safe`, and you can find its logic in `safe.ts` file. For more information, please check the article: [Typescript with Go/Rust Errors: No Try/Catch Heresy](https://dev.to/mpiorowski/typescript-with-gorust-errors-no-trycatch-heresy-49mf)
+3. For form validation, there are two approaches to handle validations:
+    - Basic Native HTML + Full Server-Side: This is the recommended approach as it removes as much unnecessary logic from the frontend as possible. Most forms in GoFast follow this approach.
+    - Full Client-Side + Full Server-Side: This approach uses the `zod` library for client-side validation. The `Edit Note` page is the only one that showcases this flow.
