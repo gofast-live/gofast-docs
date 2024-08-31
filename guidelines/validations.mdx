@@ -8,5 +8,12 @@ icon: 'list-check'
 
 1. We follow the rule of handling an error only once, which means you either return the error or log it, but never do both.
 2. If more context is needed, wrap the error using `fmt.Errorf("...: %w")`.
-3. Services must always return system errors (from `system/errors.go`). The error is then unwrapped, and based on the type, the proper logic is applied.
-4. ALL ERRORS are checked.
+3. Services must always return system errors (from `system/errors.go`). The handler then unwraps the error and, based on the type, applies the proper logic.
+4. If it's a validation error that we want to display on forms, we must return `system.ErrValidation` with the appropriate error code:
+    - **HTTP** - Unprocessed Entity 422
+    - **gRPC** - Invalid Argument 3
+5. ALL ERRORS are checked.
+
+## SvelteKit / NextJS
+
+1. 
