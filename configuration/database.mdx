@@ -60,6 +60,15 @@ You need two environment variables, `TURSO_URL` and `TURSO_TOKEN`, both of which
 
 ![Turso Secrets](/images/turso.jpeg)
 
+## Troubleshooting
+
+- When running Docker on WSL2, the SQLite file may not work. In that case, you probably need to exclude it from volumes:
+```
+    volumes:
+      - ./go:/server
+      - /server/storage/you_sqlite_file.db
+```
+
 ## Need help?
 
 Visit our discord server to ask any questions, make suggestions and give feedback :).
