@@ -46,16 +46,6 @@ services:
 
 ## Implementation Details
 
-## Add new provider
-
-To change the current provider, modify the `docker-compose.yml` file and add the corresponding secrets.
-
-To include more providers, follow these steps in the `/storage.go` file, which holds the logic:
-
-1. Add the new provider to the `Provider` constant.
-2. Create a new provider function that returns database driver and cleanup functions.
-3. Add any new secrets / database parameters in the `env.go` file.
-
 ### SQLite
 
 The only environment variable required here is `SQLITE_FILE`, which points to the file location of the database.
@@ -101,6 +91,16 @@ https://app.turso.tech/
 You need two environment variables, `TURSO_URL` and `TURSO_TOKEN`, both of which can be found here:
 
 ![Turso Secrets](/images/turso.jpeg)
+
+## Add new provider
+
+To change the current provider, modify the `docker-compose.yml` file and add the corresponding secrets.
+
+To include more providers, follow these steps in the `/storage.go` file, which holds the logic:
+
+1. Add the new provider to the `Provider` constant.
+2. Create a new provider function that returns database driver and cleanup functions.
+3. Add any new secrets / database parameters in the `env.go` file.
 
 ## Troubleshooting
 
