@@ -18,6 +18,10 @@ The `PostgreSQL (local)` will add a PostgreSQL instance to your Docker Compose f
 
 Possible options are `sqlite`, `turso`, `postgres` and `memory`.
 
+### Database Configuration
+
+Depending on the provider, you need to set the following environment variables in the `docker-compose.yml` file:
+
 - for `sqlite`, set `SQLITE_FILE` to the file location.
 - for `turso`, set `TURSO_URL` and `TURSO_TOKEN`.
 - for `postgres`, set `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_DB`, `POSTGRES_USER` and `POSTGRES_PASS`.
@@ -28,7 +32,7 @@ services:
   server:
     environment:
       DB_PROVIDER: sqlite
-      SQLITE_FILE: ./storage/local.db
+      SQLITE_FILE: /server/storage/local.db
       # DATABASE: turso
       # TURSO_URL: https://app.turso.tech/
       # TURSO_TOKEN: your_token
