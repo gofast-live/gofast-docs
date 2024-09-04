@@ -6,7 +6,9 @@ icon: 'webhook'
 
 ## Configuration
 
-This choice must be made using the GoFast CLI.
+This choice must be made using the GoFast CLI. Possible options are `HTTP` and `gRPC`.
+
+## Implementation Details
 
 - HTTP implementation will remove all gRPC code, proto files and libraries.
 - gRPC implementation uses streams for all queries, and unary for all mutations.
@@ -14,7 +16,7 @@ This choice must be made using the GoFast CLI.
     - Payments webhook.
     - Files functionality. gRPC is just not the best solution to handle file uploads and downloads.
 
-### gRPC generation
+## gRPC generation
 
 For gRPC implementation, all proto files are inside the `proto` folder. After making any changes, we need to generate new types for both the server and client.
 
