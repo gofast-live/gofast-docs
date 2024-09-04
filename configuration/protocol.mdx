@@ -10,9 +10,9 @@ This choice must be made using the **GoFast CLI**. Possible options are `HTTP` a
 
 ## Implementation Details
 
-- HTTP implementation will remove all gRPC code, proto files and libraries.
-- gRPC implementation uses streams for all queries, and unary for all mutations.
-- gRPC implementation will still have some HTTP routes:
+- **HTTP** implementation will remove all gRPC code, proto files and libraries.
+- **gRPC** implementation uses streams for all queries, and unary for all mutations.
+- **gRPC** implementation will still have some HTTP routes:
     - Payments webhook.
     - Files functionality. gRPC is just not the best solution to handle file uploads and downloads.
 
