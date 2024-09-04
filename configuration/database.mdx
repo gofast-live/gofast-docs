@@ -6,6 +6,8 @@ icon: "database"
 
 ## Configuration
 
+This choice can be made using the **GoFast CLI** or by modifying the `docker-compose.yml` file.
+
 ### via CLI
 
 Possible options are `SQLite`, `Turso with Embedded Replicas`, `PostgreSQL (local)` and `PostgreSQL (remote)`.
@@ -25,17 +27,17 @@ Possible options are `sqlite`, `turso`, `postgres` and `memory`.
 services:
   server:
     environment:
-      - DATABASE=sqlite
-      - SQLITE_FILE=/server/storage/local.db
-      # - DATABASE=turso
-      # - TURSO_URL=https://app.turso.tech/
-      # - TURSO_TOKEN=your_token
-      # - DATABASE=postgres
-      # - POSTGRES_HOST=localhost
-      # - POSTGRES_PORT=5432
-      # - POSTGRES_DB=your_db
-      # - POSTGRES_USER=your_user
-      # - POSTGRES_PASS=your_pass
+      DB_PROVIDER: sqlite
+      SQLITE_FILE: ./storage/local.db
+      # DATABASE: turso
+      # TURSO_URL: https://app.turso.tech/
+      # TURSO_TOKEN: your_token
+      # DATABASE: postgres
+      # POSTGRES_HOST: localhost
+      # POSTGRES_PORT: 5432
+      # POSTGRES_DB: your_db
+      # POSTGRES_USER: your_user
+      # POSTGRES_PASS: your_pass
 ```
 
 ## Implementation Details
