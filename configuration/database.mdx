@@ -1,12 +1,14 @@
 ---
-title: 'Database'
-description: 'Choose between PostgreSQL, Turso with Embedded Replicas, or SQLite'
-icon: 'database'
+title: "Database"
+description: "Choose between PostgreSQL, Turso with Embedded Replicas, or SQLite"
+icon: "database"
 ---
 
 ## Configuration
 
-This choice can be either made using **GoFast CLI** or by editing `docker-compose.yml` file. Possible options are `SQLite`, `Turso with Embedded Replicas`, `PostgreSQL (local)` and `PostgreSQL (remote)`.
+This choice can be either made using **GoFast CLI** or by editing `docker-compose.yml` file.
+
+Possible options are `SQLite`, `Turso with Embedded Replicas`, `PostgreSQL (local)` and `PostgreSQL (remote)`.
 
 ## Implementation Details
 
@@ -69,6 +71,7 @@ You need two environment variables, `TURSO_URL` and `TURSO_TOKEN`, both of which
 ## Troubleshooting
 
 - When running Docker on WSL2, the SQLite file may not work. In that case, you probably need to exclude it from volumes:
+
 ```
     volumes:
       - ./go:/server

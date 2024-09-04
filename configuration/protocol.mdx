@@ -1,7 +1,7 @@
 ---
-title: 'Protocol'
-description: 'Choose between HTTP or gRPC'
-icon: 'webhook'
+title: "Protocol"
+description: "Choose between HTTP or gRPC"
+icon: "webhook"
 ---
 
 ## Configuration
@@ -13,8 +13,8 @@ This choice must be made using the **GoFast CLI**. Possible options are `HTTP` a
 - **HTTP** implementation will remove all gRPC code, proto files and libraries.
 - **gRPC** implementation uses streams for all queries, and unary for all mutations.
 - **gRPC** implementation will still have some HTTP routes:
-    - Payments webhook.
-    - Files functionality. gRPC is just not the best solution to handle file uploads and downloads.
+  - Payments webhook.
+  - Files functionality. gRPC is just not the best solution to handle file uploads and downloads.
 
 ## gRPC generation
 
