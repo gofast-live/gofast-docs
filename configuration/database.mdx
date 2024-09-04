@@ -80,7 +80,32 @@ sqlite3 local.db '.backup local.db.bak'
 
 ### PostgreSQL
 
-There are two settings for PostgreSQL: local and remote. The local setting involves setting up a Docker PostgreSQL instance on your machine, while the remote setting requires database connection parameters.
+When using the **CLI**, you can choose between a **local** or **remote** PostgreSQL instance.
+The **local** option will add a PostgreSQL instance to your Docker Compose file:
+
+```yaml
+services:
+  server:
+    environment:
+      DB_PROVIDER: postgres
+      # it uses the internal network to connect to the database
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: gofast
+      POSTGRES_USER: gofast
+      POSTGRES_PASS: gofast
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: gofast
+      POSTGRES_USER: gofast
+      POSTGRES_PASSWORD: gofast
+    ports:
+      - 5432:5432
+```
+
+For the **remote** option, you need to set the following environment variables:
 
 ```yaml
 services:
@@ -103,6 +128,8 @@ https://app.turso.tech/
 You need two environment variables, `TURSO_URL` and `TURSO_TOKEN`, both of which can be found here:
 
 ![Turso Secrets](/images/turso.jpeg)
+
+After setting up the database, you can use the Turso provider:
 
 ```yaml
 services:
