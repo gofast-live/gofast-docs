@@ -6,6 +6,12 @@ icon: 'database'
 
 ## Configuration
 
+This choice can be either made using **GoFast CLI** or by editing `docker-compose.yml` file. Possible options are `SQLite`, `Turso with Embedded Replicas`, `PostgreSQL (local)` and `PostgreSQL (remote)`.
+
+## Implementation Details
+
+## Add new provider
+
 To change the current provider, modify the `docker-compose.yml` file and add the corresponding secrets.
 
 To include more providers, follow these steps in the `/storage.go` file, which holds the logic:
