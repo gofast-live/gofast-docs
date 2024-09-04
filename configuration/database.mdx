@@ -50,6 +50,14 @@ services:
 
 The only environment variable required here is `SQLITE_FILE`, which points to the file location of the database.
 
+```yaml
+services:
+  server:
+    environment:
+      DB_PROVIDER: sqlite
+      SQLITE_FILE: /server/storage/local.db
+```
+
 This is also the default configuration when building the base project, with a modern setup:
 
 ```go
@@ -74,12 +82,16 @@ sqlite3 local.db '.backup local.db.bak'
 
 There are two settings for PostgreSQL: local and remote. The local setting involves setting up a Docker PostgreSQL instance on your machine, while the remote setting requires database connection parameters.
 
-```bash
-    POSTGRES_HOST: ${POSTGRES_HOST}
-    POSTGRES_PORT: ${POSTGRES_PORT}
-    POSTGRES_DB: ${POSTGRES_DB}
-    POSTGRES_USER: ${POSTGRES_USER}
-    POSTGRES_PASS: ${POSTGRES_PASS}
+```yaml
+services:
+  server:
+    environment:
+      DB_PROVIDER: postgres
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASS: ${POSTGRES_PASS}
 ```
 
 ### Turso with Embedded Replicas
@@ -91,6 +103,15 @@ https://app.turso.tech/
 You need two environment variables, `TURSO_URL` and `TURSO_TOKEN`, both of which can be found here:
 
 ![Turso Secrets](/images/turso.jpeg)
+
+```yaml
+services:
+  server:
+    environment:
+      DB_PROVIDER: turso
+      TURSO_URL: https://app.turso.tech/
+      TURSO_TOKEN: your_token
+```
 
 ## Add new provider
 
