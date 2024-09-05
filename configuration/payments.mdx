@@ -1,12 +1,43 @@
 ---
-title: 'Payments'
-description: 'Choose between Stripe, or Lemon Squeezy (not implemented)'
-icon: 'credit-card'
+title: "Payments"
+description: "Choose between Stripe, or Lemon Squeezy (not implemented)"
+icon: "credit-card"
 ---
 
 ## Configuration
 
-To change the current provider, modify the `docker-compose.yml` file and add the corresponding secrets.
+This choice can be made using the **GoFast CLI** or by modifying the `docker-compose.yml` file.
+
+### via CLI
+
+Possible options are `Stripe`, `Lemon Squeezy` and `Local (mock)`.
+
+### via Docker Compose
+
+Possible options are `stripe`, `lemon` and `local`.
+
+### Payments Configuration
+
+Depending on the provider, you need to set the following environment variables in the `docker-compose.yml` file:
+
+- for `stripe`, set `STRIPE_API_KEY` and `STRIPE_PRICE_ID`.
+- for `lemon`, set `LEMON_API_KEY` and `LEMON_PRICE_ID`.
+- for `local`, no configuration is needed.
+
+```yaml
+services:
+  server:
+    environment:
+      PAYMENT_PROVIDER: stripe
+      STRIPE_API_KEY: ${STRIPE_API_KEY}
+      STRIPE_PRICE_ID: ${STRIPE_PRICE_ID}
+      # PAYMENT_PROVIDER: lemon
+      # LEMON_API_KEY: ${LEMON_API_KEY}
+      # LEMON_PRICE_ID: ${LEMON_PRICE_ID}
+      # PAYMENT_PROVIDER: local
+```
+
+## Implementation Details
 
 The payments implementation can generate the client **Checkout Session** to process payments, the **Customer Portal** to check invoices, and includes a **Webhook** implementation to listen for changes.
 The flow is as follows:
@@ -17,12 +48,55 @@ The flow is as follows:
 4. A webhook on the backend listens for changes and updates the client's status accordingly.
 5. After the client is created in the payment provider, they can visit their customer portal to check all invoices.
 
-To include more providers, follow these steps in the `payment/provider.go` file, which holds the logic:
+## Adding a New Provider
+
+To add a new provider, follow these steps in the `/payment/provider.go` file:
 
 1. Add the new provider to the `Provider` constant.
+
+```go
+const (
+    Stripe Provider = "stripe"
+    Lemon Provider = "lemon"
+    Local Provider = "local"
+    Poodle Provider = "poodle"
+)
+```
+
 2. Create a new provider struct.
-3. Add the required methods to the new struct.
-4. Add any new secrets in the `env.go` file.
+
+```go
+type poodleProvider struct{}
+```
+
+3. Return the new provider in the `NewProvider` function:
+
+```go
+case Poodle:
+    return &poodleProvider{}
+```
+
+4. Implement the required methods:
+
+```go
+func (p *poodleProvider) createCustomer(ctx context.Context, userEmail string) (customerId string, err error) {
+    // Implement the logic to create a customer
+}
+
+func (p *poodleProvider) createPaymentCheckout(ctx context.Context, subscriptionId string) (url string, err error) {
+    // Implement the logic to create a payment checkout
+}
+
+func (p *poodleProvider) createPaymentPortal(ctx context.Context, subscriptionId string) (url string, err error) {
+    // Implement the logic to create a payment portal
+}
+
+func (p *poodleProvider) handleWebhook(ctx context.Context, payload []byte) (customerId string, subEndDate *time.Time, err error) {
+    // Implement the logic to handle a webhook
+}
+```
+
+5. Add any new secrets in the `env.go` file.
 
 ## Getting Secrets
 

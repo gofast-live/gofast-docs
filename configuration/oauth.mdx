@@ -29,6 +29,8 @@ The OAuth implementation does not depend on any external providers. It's built u
 
 ## Adding a new provider
 
+To include more providers, follow these steps in the `/auth/provider.go` file:
+
 ### Backend
 
 1. Add the new provider to the `Provider` constant.
@@ -42,7 +44,7 @@ const (
 )
 ```
 
-2. Create a new struct that holds the provider configuration:
+2. Create a new provider struct.
 
 ```go
 type oauthDiscord struct {
@@ -80,9 +82,11 @@ func (o *oauthDiscord) getOAuthConfig() *oauth2.Config {
 }
 
 func (o *oauthDiscord) getUserInfo(accessToken string) (*UserInfo, error) {
-    ...
+    // Implement the logic to get the user info
 }
 ```
+
+5. Add any new secrets in the `env.go` file.
 
 ### Frontend
 
