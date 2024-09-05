@@ -21,7 +21,7 @@ Possible options are `stripe`, `lemon` and `local`.
 Depending on the provider, you need to set the following environment variables in the `docker-compose.yml` file:
 
 - for `stripe`, set `STRIPE_API_KEY` and `STRIPE_PRICE_ID`.
-- for `lemon`, set `LEMON_API_KEY` and `LEMON_PRICE_ID`.
+- for `lemon`, set `LEMON_API_KEY` and `LEMON_PRICE_ID`. (WIP)
 - for `local`, no configuration is needed.
 
 ```yaml
@@ -49,6 +49,8 @@ The flow is as follows:
 5. After the client is created in the payment provider, they can visit their customer portal to check all invoices.
 
 Since the Webhook needs to listen for changes, the gRPC configuration still includes an HTTP server.
+
+The local provider is a mock implementation that doesn't require any configuration. It generates a random customer ID and subscription end date.
 
 ### Stripe
 
