@@ -25,9 +25,9 @@ The **Magic Link** option requires only a working email provider. If the `log` o
 
 ## Implementation Details
 
-The OAuth implementation does not depend on any external libraries. It's built using the `golang.org/x/oauth2` library. The main logic can be found in the `/auth/provider.go` file.
+The OAuth implementation does not depend on any external providers. It's built using the `golang.org/x/oauth2` library. The main logic can be found in the `/auth/provider.go` file.
 
-## Adding new provider
+## Adding a new provider
 
 ### Backend
 
@@ -42,7 +42,7 @@ const (
 )
 ```
 
-2. Create a new struct:
+2. Create a new struct that holds the provider configuration:
 
 ```go
 type oauthDiscord struct {
