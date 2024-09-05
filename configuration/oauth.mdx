@@ -88,6 +88,16 @@ func (o *oauthDiscord) getUserInfo(accessToken string) (*UserInfo, error) {
 
 5. Add any new secrets in the `env.go` file.
 
+6. Fill in the `docker-compose.yml` file with the new provider configuration.
+
+```yaml
+services:
+  server:
+    environment:
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
+```
+
 ### Frontend
 
 On the frontend side, all you need to do is create a new form with a button and a hidden input that holds the new provider name.

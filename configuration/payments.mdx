@@ -98,6 +98,17 @@ func (p *poodleProvider) handleWebhook(ctx context.Context, payload []byte) (cus
 
 5. Add any new secrets in the `env.go` file.
 
+6. Fill in the `docker-compose.yml` file with the new provider configuration.
+
+```yaml
+services:
+  server:
+    environment:
+      PAYMENT_PROVIDER: poodle
+      POODLE_API_KEY: ${POODLE_API_KEY}
+      POODLE_PRICE_ID: ${POODLE_PRICE_ID}
+```
+
 ## Getting Secrets
 
 ### Stripe
