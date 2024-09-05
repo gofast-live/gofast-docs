@@ -1,15 +1,31 @@
 ---
-title: 'OAuth'
-description: 'Fully working OAuth flow without any external provider + Magic Links'
-icon: 'right-to-bracket'
+title: "OAuth"
+description: "Fully working OAuth flow without any external provider + Magic Links"
+icon: "right-to-bracket"
 ---
 
 ## Configuration
 
-The OAuth implementation does not depend on any external providers. It's built using the `golang.org/x/oauth2` library. 
-The base application already includes configurations for two providers: **Google** and **GitHub**. 
+The base application includes configurations for two providers: **Google** and **GitHub**, plus a **Magic Link** option.
 
-Remember that Magic Links require a working email provider.
+- To enable the Google provider, you need to set the `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` environment variables.
+- To enable the GitHub provider, you need to set the `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` environment variables.
+
+```yaml
+services:
+  server:
+    environment:
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+```
+
+The Magic Link option requires only a working email provider. If the `log` option is chosen for email configuration, the magic link will appear in the application logs.
+
+## Implementation Details
+
+The OAuth implementation does not depend on any external libraries. It's built using the `golang.org/x/oauth2` library.
 
 ### Backend
 
