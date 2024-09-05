@@ -145,8 +145,48 @@ services:
 To add a new provider, follow these steps in the `/storage.go` file:
 
 1. Add the new provider to the `Provider` constant.
+
+```go
+const (
+	Sqlite   Provider = "sqlite"
+	Turso    Provider = "turso"
+	Postgres Provider = "postgres"
+	Memory   Provider = "memory"
+    MySQL    Provider = "mysql"
+)
+```
+
 2. Create a new provider function that returns database driver and cleanup functions.
-3. Add any new secrets / database parameters in the `env.go` file.
+
+```go
+func newMySQLStorage() (*Storage, error, func()) {
+	// Implement the MySQL connection here
+}
+```
+
+3. Return the new provider in the `NewStorage` function:
+
+```go
+case MySQL:
+    return newMySQLStorage()
+```
+
+4. Add any new secrets in the `env.go` file.
+
+5. Fill in the `docker-compose.yml` file with the new provider configuration.
+
+```yaml
+services:
+  server:
+    environment:
+      DB_PROVIDER: mysql
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASS: ${MYSQL_PASS}
+```
+
 
 ## Troubleshooting
 
