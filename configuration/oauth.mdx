@@ -8,8 +8,8 @@ icon: "right-to-bracket"
 
 The base application includes configurations for two providers: **Google** and **GitHub**, plus a **Magic Link** option.
 
-- To enable the Google provider, you need to set the `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` environment variables.
-- To enable the GitHub provider, you need to set the `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` environment variables.
+- To enable the **Google** provider, you need to set the `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` environment variables.
+- To enable the **GitHub** provider, you need to set the `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` environment variables.
 
 ```yaml
 services:
@@ -21,11 +21,11 @@ services:
       GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
 ```
 
-The Magic Link option requires only a working email provider. If the `log` option is chosen for email configuration, the magic link will appear in the application logs.
+The **Magic Link** option requires only a working email provider. If the `log` option is chosen for email configuration, the magic link will appear in the application logs.
 
 ## Implementation Details
 
-The OAuth implementation does not depend on any external libraries. It's built using the `golang.org/x/oauth2` library.
+The OAuth implementation does not depend on any external libraries. It's built using the `golang.org/x/oauth2` library. The main loginc can be found in the `/auth/provider.go` file.
 
 ### Backend
 
