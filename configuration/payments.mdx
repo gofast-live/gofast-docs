@@ -48,6 +48,16 @@ The flow is as follows:
 4. A webhook on the backend listens for changes and updates the client's status accordingly.
 5. After the client is created in the payment provider, they can visit their customer portal to check all invoices.
 
+Since the Webhook needs to listen for changes, the gRPC configuration still includes an HTTP server.
+
+### Stripe
+
+To test Stripe locally, don't forget to run a local test webhook command:
+
+```bash
+stripe listen --forward-to localhost:4002/payments/webhook
+```
+
 ## Adding a New Provider
 
 To add a new provider, follow these steps in the `/payment/provider.go` file:
@@ -59,39 +69,39 @@ const (
     stripe Provider = "stripe"
     lemon Provider = "lemon"
     local Provider = "local"
-    poodle Provider = "poodle"
+    paddle Provider = "paddle"
 )
 ```
 
 2. Create a new provider struct.
 
 ```go
-type poodleProvider struct{}
+type paddleProvider struct{}
 ```
 
 3. Return the new provider in the `NewProvider` function:
 
 ```go
 case Poodle:
-    return &poodleProvider{}
+    return &paddleProvider{}
 ```
 
 4. Implement the required methods:
 
 ```go
-func (p *poodleProvider) createCustomer(ctx context.Context, userEmail string) (customerId string, err error) {
+func (p *paddleProvider) createCustomer(ctx context.Context, userEmail string) (customerId string, err error) {
     // Implement the logic to create a customer
 }
 
-func (p *poodleProvider) createPaymentCheckout(ctx context.Context, subscriptionId string) (url string, err error) {
+func (p *paddleProvider) createPaymentCheckout(ctx context.Context, subscriptionId string) (url string, err error) {
     // Implement the logic to create a payment checkout
 }
 
-func (p *poodleProvider) createPaymentPortal(ctx context.Context, subscriptionId string) (url string, err error) {
+func (p *paddleProvider) createPaymentPortal(ctx context.Context, subscriptionId string) (url string, err error) {
     // Implement the logic to create a payment portal
 }
 
-func (p *poodleProvider) handleWebhook(ctx context.Context, payload []byte) (customerId string, subEndDate *time.Time, err error) {
+func (p *paddleProvider) handleWebhook(ctx context.Context, payload []byte) (customerId string, subEndDate *time.Time, err error) {
     // Implement the logic to handle a webhook
 }
 ```
@@ -104,9 +114,9 @@ func (p *poodleProvider) handleWebhook(ctx context.Context, payload []byte) (cus
 services:
   server:
     environment:
-      PAYMENT_PROVIDER: poodle
-      POODLE_API_KEY: ${POODLE_API_KEY}
-      POODLE_PRICE_ID: ${POODLE_PRICE_ID}
+      PAYMENT_PROVIDER: paddle
+      PADDLE_API_KEY: ${PADDLE_API_KEY}
+      PADDLE_PRICE_ID: ${PADDLE_PRICE_ID}
 ```
 
 ## Getting Secrets
@@ -114,12 +124,6 @@ services:
 ### Stripe
 
 In progress...
-
-To test Stripe locally, don't forget to run a local test webhook command:
-
-```bash
-stripe listen --forward-to localhost:4002/payments/webhook
-```
 
 ### Lemon Squeezy
 
