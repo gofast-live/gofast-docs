@@ -27,14 +27,62 @@ The **Magic Link** option requires only a working email provider. If the `log` o
 
 The OAuth implementation does not depend on any external libraries. It's built using the `golang.org/x/oauth2` library. The main logic can be found in the `/auth/provider.go` file.
 
+## Adding new provider
+
 ### Backend
 
-To include more providers, follow these steps in the `oauth.go` file, which holds the logic:
+1. Add the new provider to the `Provider` constant.
 
-1. Add new secrets in the `env.go` file.
-2. Add the new provider to the Provider constant.
-3. Create a new provider struct.
-4. Add the required methods to the new struct.
+```go
+const (
+    Google Provider = "google"
+    GitHub Provider = "github"
+    Email Provider = "email"
+    Discord Provider = "discord"
+)
+```
+
+2. Create a new struct:
+
+```go
+type oauthDiscord struct {
+	config oauth2.Config
+}
+```
+
+3. Return the new provider in the `NewProvider` function:
+
+```go
+case Discord:
+    return &oauthDiscord{
+        config: oauth2.Config{
+            ClientID:     system.DISCORD_CLIENT_ID,
+            ClientSecret: system.DISCORD_CLIENT_SECRET,
+            Endpoint: oauth2.Endpoint{
+                AuthURL:  "https://discord.com/api/oauth2/authorize",
+                TokenURL: "https://discord.com/api/oauth2/token",
+            },
+            RedirectURL: system.CLIENT_URL + "/auth/discord",
+            Scopes:      []string{"identify", "email"},
+        },
+    }
+```
+
+4. Implement the required methods:
+
+```go
+func (o *oauthDiscord) getProvider() Provider {
+    return Discord
+}
+
+func (o *oauthDiscord) getOAuthConfig() *oauth2.Config {
+    return &o.config
+}
+
+func (o *oauthDiscord) getUserInfo(accessToken string) (*UserInfo, error) {
+    ...
+}
+```
 
 ### Frontend
 
