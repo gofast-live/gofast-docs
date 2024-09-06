@@ -1,33 +1,122 @@
 ---
-title: 'Files'
-description: 'Choose between Cloudfalre R2, AWS S3, or Google Cloud Storage'
-icon: 'files'
+title: "Files"
+description: "Choose between Cloudfalre R2, AWS S3, or Google Cloud Storage"
+icon: "files"
 ---
 
 ## Configuration
 
-To change the current provider, modify the `docker-compose.yml` file and add the corresponding secrets.
+This choice can be made using the **GoFast CLI** or by modifying the `docker-compose.yml` file.
 
-To include more providers, follow these steps in the `file/provider.go` file, which holds the logic:
+### via CLI
+
+Possible options are `Cloudflare R2`, `AWS S3`, `Google Cloud Storage` and `Local (folder)`.
+
+### via Docker Compose
+
+Possible options are `r2`, `s3`, `gcs` and `local`.
+
+### Files Configuration
+
+Depending on the provider, you need to set the following environment variables in the `docker-compose.yml` file:
+
+- for `r2`, set `R2_ENDPOINT`, `R2_ACCESS_KEY`, and `R2_SECRET_KEY`.
+- for `s3`, set `S3_REGION`, `S3_ACCESS_KEY`, and `S3_SECRET_KEY`.
+- for `gcs`, set `GOOGLE_APPLICATION_CREDENTIALS`.
+- for `local`, set `FILE_DIR`.
+
+```yaml
+services:
+  server:
+    environment:
+      FILE_PROVIDER: r2
+      BUCKET_NAME: ${BUCKET_NAME}
+      R2_ENDPOINT: ${R2_ENDPOINT}
+      R2_ACCESS_KEY: ${R2_ACCESS_KEY}
+      R2_SECRET_KEY: ${R2_SECRET_KEY}
+      # FILE_PROVIDER: s3
+      # S3_REGION: ${S3_REGION}
+      # S3_ACCESS_KEY: ${S3_ACCESS_KEY}
+      # S3_SECRET_KEY: ${S3_SECRET_KEY}
+      # FILE_PROVIDER: gcs
+      # GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+      # FILE_PROVIDER: local
+      # FILE_DIR: ${FILE_DIR}
+```
+
+## Adding a New Provider
+
+To add a new provider, follow these steps in the `/file/provider.go` file:
 
 1. Add the new provider to the `Provider` constant.
+
+```go
+const (
+	S3    Provider = "s3"
+	R2    Provider = "r2"
+	GCS   Provider = "gcs"
+	Local Provider = "local"
+    Azure Provider = "azure"
+)
+```
+
 2. Create a new provider struct.
-3. Add the required methods to the new struct.
-4. Add any new secrets in the `env.go` file.
+
+```go
+type azureProvider struct {
+    // Add any required fields here
+}
+```
+
+3. Return the new provider in the `NewProvider` function:
+
+```go
+case Azure:
+    return &azureProvider{
+        // Initialize the fields here
+    }
+```
+
+4. Implement the required methods:
+
+```go
+func (p *azureProvider) uploadFileToProvider(ctx context.Context, file *File) (*File, error) {
+    // Implement the logic to upload a file
+}
+
+func (p *azureProvider) downloadFileFromProvider(ctx context.Context, fileId string) ([]byte, error) {
+    // Implement the logic to download a file
+}
+
+func (p *azureProvider) removeFileFromProvider(ctx context.Context, fileId string) error {
+    // Implement the logic to remove a file
+}
+```
+
+5. Add any new secrets in the `env.go` file.
+
+6. Fill in the `docker-compose.yml` file with the new provider configuration.
+
+```yaml
+services:
+  server:
+    environment:
+      FILE_PROVIDER: azure
+      AZURE_ACCOUNT_NAME: ${AZURE_ACCOUNT_NAME}
+      AZURE_ACCOUNT_KEY: ${AZURE_ACCOUNT_KEY}
+      AZURE_CONTAINER_NAME: ${AZURE_CONTAINER_NAME}
+```
 
 ## Getting Secrets
 
 ### Cloudflare R2
 
-In progress...
 
 ### AWS S3
 
-In progress...
 
 ### Google Cloud Storage
 
-In progress...
 
 ## Need help?
 
