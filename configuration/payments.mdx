@@ -50,6 +50,8 @@ The flow is as follows:
 
 Since the Webhook needs to listen for changes, the gRPC configuration still includes an HTTP server.
 
+The payments have a separate file for HTTP routes: `/http/route_payment.go`.
+
 The local provider is a mock implementation that doesn't require any configuration. It generates a random customer ID and subscription end date.
 
 ### Stripe

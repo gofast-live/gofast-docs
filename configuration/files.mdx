@@ -48,6 +48,10 @@ services:
 
 Regardless of the protocol configuration, File operations (uploads and downloads) will always be handled using HTTP requests. This approach is much simpler to implement compared to using gRPC, which would require splitting files into chunks.
 
+The files have a seperate file for HTTP routes: `/http/route_file.go`.
+
+The local provider stores files in a local folder, while the other providers store files in their respective cloud storage services.
+
 ## Adding a New Provider
 
 To add a new provider, follow these steps in the `/file/provider.go` file:
