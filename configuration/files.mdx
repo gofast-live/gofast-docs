@@ -44,6 +44,10 @@ services:
       # FILE_DIR: ${FILE_DIR}
 ```
 
+## Implementations Details
+
+Regardless of the protocol configuration, File operations (uploads and downloads) will always be handled using HTTP requests. This approach is much simpler to implement compared to using gRPC, which would require splitting files into chunks.
+
 ## Adding a New Provider
 
 To add a new provider, follow these steps in the `/file/provider.go` file:
@@ -111,12 +115,9 @@ services:
 
 ### Cloudflare R2
 
-
 ### AWS S3
 
-
 ### Google Cloud Storage
-
 
 ## Need help?
 
