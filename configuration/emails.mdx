@@ -1,35 +1,124 @@
 ---
-title: 'Emails'
-description: 'Choose between Postmark, SendGrid, or Resend'
-icon: 'envelope'
+title: "Emails"
+description: "Choose between Postmark, SendGrid, or Resend"
+icon: "envelope"
 ---
 
 ## Configuration
 
-To change the current provider, modify the `docker-compose.yml` file and add the corresponding secrets.
+This choice can be made using the **GoFast CLI** or by modifying the `docker-compose.yml` file.
 
-To include more providers, follow these steps in the `email/provider.go` file, which holds the logic:
+### via CLI
+
+Possible options are `Postmark`, `SendGrid`, `Resend` and `Local (log)`.
+
+### via Docker Compose
+
+Possible options are `postmark`, `sendgrid`, `resend` and `local`.
+
+### Emails Configuration
+
+Depending on the provider, you need to set the following environment variables in the `docker-compose.yml` file:
+
+- for `postmark`, set `POSTMARK_API_KEY`.
+- for `sendgrid`, set `SENDGRID_API_KEY`.
+- for `resend`, set `RESEND_API_KEY`.
+- for `local`, no configuration is needed.
+
+```yaml
+services:
+  server:
+    environment:
+      EMAIL_PROVIDER: postmark
+      EMAIL_FROM: ${EMAIL_FROM}
+      POSTMARK_API_KEY: ${POSTMARK_API_KEY}
+      # EMAIL_PROVIDER: sendgrid
+      # SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      # EMAIL_PROVIDER: resend
+      # RESEND_API_KEY: ${RESEND_API_KEY}
+      # EMAIL_PROVIDER: local
+```
+
+## Adding a New Provider
+
+To add a new provider, follow these steps in the `/email/provider.go` file:
 
 1. Add the new provider to the `Provider` constant.
-2. Add the new provider URL.
-3. Add the body struct structure.
-4. Create a new provider struct.
-5. Add the required methods to the new struct.
-6. Add any new secrets in the `env.go` file.
+
+```go
+const (
+	Postmark Provider = "postmark"
+	Sendgrid Provider = "sendgrid"
+	Resend   Provider = "resend"
+	Local    Provider = "local"
+    Mailgun  Provider = "mailgun"
+)
+```
+
+2. Create a new provider struct.
+
+```go
+type mailgunProvider struct {
+    url string
+}
+```
+
+3. Return the new provider in the `NewProvider` function:
+
+```go
+case Mailgun:
+    return &mailgunProvider{
+        url: "https://api.mailgun.net/v3",
+    }
+```
+
+4. Implement the required methods:
+
+```go
+func (p *mailgunProvider) SendEmailToProvider(to string, subject string, body string, errorChan chan<- error) {
+    // Implement the logic to send an email
+}
+```
+
+5. Add any new secrets in the `env.go` file.
+
+6. Fill in the `docker-compose.yml` file with the new provider configuration.
+
+```yaml
+services:
+  server:
+    environment:
+      EMAIL_PROVIDER: mailgun
+      EMAIL_FROM: ${EMAIL_FROM}
+      MAILGUN_API_KEY: ${MAILGUN_API_KEY}
+```
 
 ## Getting Secrets
 
 ### Postmark
 
-In progress...
+1. Go to the [Postmark](https://account.postmarkapp.com/signin) website.
+2. Create an account or log in.
+3. Go to the [API Tokens](https://account.postmarkapp.com/servers) page.
+4. Click on the `+` button to create a new token.
+5. Copy the token and set it as the `POSTMARK_API_KEY` in the `docker-compose.yml` file.
 
 ### Sendgrid
 
-In progress...
+1. Go to the [SendGrid](https://sendgrid.com/) website.
+2. Create an account or log in.
+3. Go to the [API Keys](https://app.sendgrid.com/settings/api_keys) page.
+4. Click on the `Create API Key` button.
+5. Copy the key and set it as the `SENDGRID_API_KEY` in the `docker-compose.yml` file.
 
 ### Resend
 
-In progress...
+1. Go to the [Resend](https://resend.com/) website.
+2. Create an account or log in.
+3. Go to the [API Keys](https://resend.com/api-keys) page.
+4. Click on the `Create API Key` button.
+5. Copy the key and set it as the `RESEND_API_KEY` in the `docker-compose.yml` file.
+
 
 ## Need help?
 
