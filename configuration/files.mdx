@@ -119,9 +119,29 @@ services:
 
 ### Cloudflare R2
 
+1. Go to [Cloudflare R2](https://www.cloudflare.com/r2/) and create an account.
+2. Create a new bucket
+3. On `R2` dashboard, click on `Manage R2 API Tokens` and create a new token.
+4. Set the `R2_ENDPOINT`, `R2_ACCESS_KEY`, and `R2_SECRET_KEY` in the `docker-compose.yml` file.
+
 ### AWS S3
 
+1. Go to the [AWS Console](https://aws.amazon.com/console/) and create an account.
+2. Go to the [S3](https://s3.console.aws.amazon.com/s3/home) dashboard.
+3. Create a new bucket.
+4. Go to the [IAM](https://console.aws.amazon.com/iam/home) dashboard.
+5. Create a new user with `AmazonS3FullAccess` policy.
+6. Set the `S3_REGION`, `S3_ACCESS_KEY`, and `S3_SECRET_KEY` in the `docker-compose.yml` file.
+
 ### Google Cloud Storage
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/) and create an account.
+2. Create a new project.
+3. Go to the [Storage](https://console.cloud.google.com/storage) dashboard.
+4. Create a new bucket.
+5. Go to the [IAM & Admin](https://console.cloud.google.com/iam-admin) dashboard.
+6. Create a new service account with `Storage Admin` role.
+7. Download the JSON key and set the `GOOGLE_APPLICATION_CREDENTIALS` in the `docker-compose.yml` file.
 
 ## Need help?
 
