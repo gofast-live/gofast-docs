@@ -19,7 +19,8 @@ docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all
 ### Start the Grafana
 
 ```bash
-UID=$(id -u) GID=$(id -g) docker compose up -d
+cd grafana
+docker compose up -d
 ```
 
 ### Access Grafana
