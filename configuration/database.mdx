@@ -195,7 +195,10 @@ services:
 ```
     volumes:
       - ./go:/server
-      - /server/storage/you_sqlite_file.db
+      - /server/storage/db/
+    environment:
+      DB_PROVIDER: sqlite
+      SQLITE_FILE: /server/storage/db/local.db
 ```
 
 ## Need help?
