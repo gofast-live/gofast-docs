@@ -21,7 +21,7 @@ Possible options are `stripe`, `lemon` and `local`.
 Depending on the provider, you need to set the following environment variables in the `docker-compose.yml` file:
 
 - for `stripe`, set `STRIPE_API_KEY` and `STRIPE_PRICE_ID`.
-- for `lemon`, set `LEMON_API_KEY` and `LEMON_PRICE_ID`. (WIP)
+- for `lemon`, set `LEMON_API_KEY`, `LEMON_VARIANT_ID` and `LEMON_STORE_ID`.
 - for `local`, no configuration is needed.
 
 ```yaml
@@ -33,7 +33,8 @@ services:
       STRIPE_PRICE_ID: ${STRIPE_PRICE_ID}
       # PAYMENT_PROVIDER: lemon
       # LEMON_API_KEY: ${LEMON_API_KEY}
-      # LEMON_PRICE_ID: ${LEMON_PRICE_ID}
+      # LEMON_VARIANT_ID: ${LEMON_VARIANT_ID}
+      # LEMON_STORE_ID: ${LEMON_STORE_ID}
       # PAYMENT_PROVIDER: local
 ```
 
@@ -48,19 +49,21 @@ The flow is as follows:
 4. A webhook on the backend listens for changes and updates the client's status accordingly.
 5. After the client is created in the payment provider, they can visit their customer portal to check all invoices.
 
-Since the Webhook needs to listen for changes, the gRPC configuration still includes an HTTP server.
-
-The payments have a separate file for HTTP routes: `/http/route_payment.go`.
-
 The local provider is a mock implementation that doesn't require any configuration. It generates a random customer ID and subscription end date.
 
-### Stripe
+### Webhook
 
-To test Stripe locally, don't forget to run a local test webhook command:
+Since the webhook needs to listen for changes, the gRPC configuration still includes an HTTP server.
+The payments webhook has a separate file for HTTP routes: `/http/route_webhook.go`.
+Regardless of the provider, remember to set up the webhook URL in the provider's dashboard, pointing to the `/payments/webhook` route.
+
+To test Stripe webhook locally, you can use the Stripe CLI, authenticate, and forward the events to the local server:
 
 ```bash
 stripe listen --forward-to localhost:4002/payments/webhook
 ```
+
+Lemon Squeezy doesn't have a CLI, so you need to set up a tunnel to forward the events to the local server. One option is [Cloudflare Tunnel](https://one.dash.cloudflare.com).
 
 ## Adding a New Provider
 
@@ -134,11 +137,17 @@ To get the `STRIPE_API_KEY` and `STRIPE_PRICE_ID`, you need to create an account
 3. Create a new product and price in the [Products](https://dashboard.stripe.com/test/products) section.
 4. Go to the `Prices` tab and create a new price.
 5. Go to the price details.
-4. Copy the `Price ID` and set it as the `STRIPE_PRICE_ID`.
+6. Copy the `Price ID` and set it as the `STRIPE_PRICE_ID`.
 
 ### Lemon Squeezy
 
-In progress...
+To get the `LEMON_API_KEY`, `LEMON_VARIANT_ID` and `LEMON_STORE_ID`, you need to create an account on the Lemon Squeezy website and get the keys from the dashboard.
+
+1. Go to the [Lemon Squeezy Dashboard](https://app.lemonsqueezy.com/settings/api).
+2. Create a new API key and set it as the `LEMON_API_KEY`.
+3. Create a new product on the [Products](https://app.lemonsqueezy.com/products) section.
+4. On the list, open the dropdown and click on `Copy variant ID`. Set it as the `LEMON_VARIANT_ID`.
+5. Go to the (Stores)[https://app.lemonsqueezy.com/settings/stores] section, where you can find the `Store ID`. Set it as the `LEMON_STORE_ID`.
 
 ## Need help?
 
