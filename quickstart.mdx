@@ -67,3 +67,17 @@ You will be prompted to insert your email and the API key you retrieved in **ste
 ![CLI Login Screen](/images/login.jpg)
 
 Log in and let it guide you through! Have fun :)
+
+## Download the GoFast Repository
+
+In case you have problems with the CLI, you can always download the repository. It's not recommended, because the CLI cleans and sets up the project for you.
+
+```bash
+curl -L \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer <YOUR_TOKEN>" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/repos/gofast-live/gofast-app/zipball/main \
+  --output gofast.zip
+```
+
