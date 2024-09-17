@@ -73,10 +73,10 @@ Log in and let it guide you through! Have fun :)
 In case you have problems with the CLI, you can always download the repository. It's not recommended, because the CLI cleans and sets up the project for you.
 
 ```bash
-curl -L \
-    -H "Accept: application/vnd.github+json" \
+curl -GL \
     -H "Authorization: Bearer <YOUR_TOKEN>" \
-    https://api.github.com/repos/gofast-live/gofast-app/zipball/main \
-  --output gofast.zip
+    https://admin.gofast.live/download \
+    -d "email=<YOUR_EMAIL>" \
+    --output gofast.zip
 ```
 
