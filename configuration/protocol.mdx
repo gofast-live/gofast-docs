@@ -21,7 +21,7 @@ This choice must be made using the **GoFast CLI**. Possible options are `HTTP` a
 For gRPC implementation, all proto files are inside the `proto` folder. After making any changes, we need to generate new types for both the server and client.
 
 ```bash
-sh proto.sh
+cd scripts && sh proto.sh
 ```
 
 This script will take care of type generation and propagation, but it depends on two libraries, so make sure you have them globally installed:
