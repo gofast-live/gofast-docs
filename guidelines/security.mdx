@@ -25,6 +25,24 @@ The main logic is located in the `system/jwt.go` file.
 cd scripts && sh key.sh
 ```
 
+#### Generating Tokens
+
+```go
+jwtToken, jwtRefreshToken, err := system.GenerateTokens(refreshToken.Id, user.Id, user.Access, system.GetAccessRoutes(user.Access), user.Avatar, user.Email, subscriptionActive)
+if err != nil {
+    return nil, system.ErrUnauthorized{Err: fmt.Errorf("Error generating JWT token: %w", err)}
+}
+```
+
+#### Validating Tokens
+
+```go
+user, err := system.ValidateToken(token)
+if err != nil {
+    return system.ErrUnauthorized{Err: err}
+}
+```
+
 ### Next.js specific implementation
 
 Because of the limitaions of middleware in Next.js (Edge environment), the public key is stored in the environment variable `JWT_KEY` as string.
@@ -43,7 +61,6 @@ The main logic is located in the `system/access.go` file.
 #### Permissions Constants
 
 ```go
-
 const (
 	READ_NOTES  int64 = 0x0000000000000001
 	INSERT_NOTE int64 = 0x0000000000000002
@@ -68,6 +85,31 @@ const (
 ```go
 access := system.NewAccess(user.Access)
 if !access.HasAccess(system.READ_NOTES) {
+    return system.ErrForbidden{Message: "Access denied"}
+}
+```
+
+### Attribute-Based Access Control (ABAC)
+
+- The system also supports Attribute-Based Access Control (ABAC) for more complex access control scenarios.
+- Define policies in the `CheckUserAttr` function:
+
+```go
+func CheckUserAttr(access int64, userAttr *UserAttr) bool {
+	if access == UPDATE_NOTE {
+		return userAttr.Department == "IT" && userAttr.Position == "Developer"
+	}
+	if access == DELETE_NOTE {
+		return userAttr.Department == "IT" && userAttr.Position == "Admin"
+	}
+	return true
+}
+```
+
+And then check the access:
+
+```go
+if !system.NewAccessWithAttr(user.Access, userAttr).HasAccess(system.UPDATE_NOTE) {
     return system.ErrForbidden{Message: "Access denied"}
 }
 ```
