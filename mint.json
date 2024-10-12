@@ -62,9 +62,6 @@
     {
       "group": "Guidelines",
       "pages": [
-        "guidelines/go",
-        "guidelines/sveltekit",
-        "guidelines/nextjs",
         "guidelines/security",
         "guidelines/errors"
       ]
