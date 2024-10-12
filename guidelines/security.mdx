@@ -33,8 +33,41 @@ Because of the limitaions of middleware in Next.js (Edge environment), the publi
 
 The main logic is located in the `system/access.go` file.
 
-### Access Control Lists (ACL)
+### Role-Based Access Control (RBAC)
 
-The main authorization mechanism is based on [Discord permissions](https://discord.com/developers/docs/topics/permissions).
-Each user has a set of permissions that are checked against the required permissions for a given action.
-Permissions are stored in a variable-length integer serialized into a string, and are calculated using bitwise operations.
+- The main authorization mechanism is based on [Discord permissions](https://discord.com/developers/docs/topics/permissions).
+- Each user has a set of permissions that are checked against the required permissions for a given action.
+- Permissions are stored in a variable-length integer serialized into a string, and are calculated using bitwise operations.
+- This allows for a high level of granularity in permissions, a very low storage overhead, and fast permission checks.
+
+#### Permissions Constants
+
+```go
+
+const (
+	READ_NOTES  int64 = 0x0000000000000001
+	INSERT_NOTE int64 = 0x0000000000000002
+	UPDATE_NOTE int64 = 0x0000000000000004
+	DELETE_NOTE int64 = 0x0000000000000008
+
+	READ_PAYMENTS  int64 = 0x0000000000000010
+	CREATE_PAYMENT int64 = 0x0000000000000020
+
+	READ_EMAILS int64 = 0x0000000000000040
+	SEND_EMAIL  int64 = 0x0000000000000080
+
+	READ_FILES    int64 = 0x0000000000000100
+	UPLOAD_FILE   int64 = 0x0000000000000200
+	DOWNLOAD_FILE int64 = 0x0000000000000400
+	DELETE_FILE   int64 = 0x0000000000000800
+)
+```
+
+#### Checking Permissions
+
+```go
+access := system.NewAccess(user.Access)
+if !access.HasAccess(system.READ_NOTES) {
+    return system.ErrForbidden{Message: "Access denied"}
+}
+```
