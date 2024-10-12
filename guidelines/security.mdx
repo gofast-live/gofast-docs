@@ -114,6 +114,23 @@ if !system.NewAccessWithAttr(user.Access, userAttr).HasAccess(system.UPDATE_NOTE
 }
 ```
 
+## How to Use
+
+Combine the two mechanisms to create a secure and flexible access control system.
+The flow start with extracting the token from the request, either from the `authorization` header or the `metadata`.
+Then, in the service layer, validate the token and check the access:
+
+```go
+user, err := system.ValidateToken(token)
+if err != nil {
+    return system.ErrUnauthorized{Err: err}
+}
+access := system.NewAccess(user.Access)
+if !access.HasAccess(system.READ_NOTES) {
+    return system.ErrForbidden{Message: "Access denied"}
+}
+```
+
 ## Need help?
 
 Visit our discord server to ask any questions, make suggestions and give feedback :).
