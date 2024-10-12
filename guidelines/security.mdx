@@ -12,7 +12,9 @@ icon: "shield"
 - Encryption: JWTs are encrypted using `EdDSA` for enhanced security.
 - Token can be invalidated: Refresh tokens allow generating new JWTs and can be manually invalidated by clearing the `user_id` in the `user_tokens` table.
 - Server-Side Security: As much logic as possible is handled on the server side to maintain security.
-- Transport: For `HTTP`, the tokens are sent in the `Authorization` header as `Bearer` tokens. For `gRPC`, the tokens are sent in the `metadata` as `authorization` tokens.
+- Transport:
+  - For `HTTP`, the tokens are sent in the `Authorization` header as `Bearer` tokens.
+  - For `gRPC`, the tokens are sent in the `metadata` as `authorization` tokens.
 - Key Management:
   - Private/Public Key Pair: The system uses a private/public key pair for token validation.
   - Key Generation: To generate new keys, run the script:
