@@ -6,6 +6,8 @@ icon: "shield"
 
 ## Authentication
 
+The main logic is located in the `system/jwt.go` file.
+
 ### JWT-Based Authentication
 
 - JWT Authentication: The system uses JSON Web Tokens (JWT) with refresh token rotation for managing user sessions.
@@ -28,6 +30,8 @@ cd scripts && sh key.sh
 Because of the limitaions of middleware in Next.js (Edge environment), the public key is stored in the environment variable `JWT_KEY` as string.
 
 ## Authorization
+
+The main logic is located in the `system/access.go` file.
 
 ### Access Control Lists (ACL)
 
