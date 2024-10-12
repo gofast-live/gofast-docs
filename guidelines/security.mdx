@@ -10,10 +10,10 @@ icon: "shield"
 
 - JWT Authentication: The system uses JSON Web Tokens (JWT) with refresh token rotation for managing user sessions.
 - Encryption: JWTs are encrypted using `EdDSA` for enhanced security.
-- Token can be invalidated: Refresh tokens allow generating new JWTs and can be manually invalidated by clearing the `user_id` in the `user_tokens` table.
 - Server-Side Security: As much logic as possible is handled on the server side to maintain security.
+- Token can be invalidated: Refresh tokens allow generating new JWTs and can be manually invalidated by clearing the `user_id` in the `user_tokens` table.
 - Transport:
-  - For `HTTP`, the tokens are sent in the `Authorization` header as `Bearer` tokens.
+  - For `HTTP`, the tokens are sent in the `authorization` header as `Bearer` tokens.
   - For `gRPC`, the tokens are sent in the `metadata` as `authorization` tokens.
 - Key Management:
   - Private/Public Key Pair: The system uses a private/public key pair for token validation.
@@ -26,3 +26,11 @@ cd scripts && sh key.sh
 ### Next.js specific implementation
 
 Because of the limitaions of middleware in Next.js (Edge environment), the public key is stored in the environment variable `JWT_KEY` as string.
+
+## Authorization
+
+### Access Control Lists (ACL)
+
+The main authorization mechanism is based on [Discord permissions](https://discord.com/developers/docs/topics/permissions).
+Each user has a set of permissions that are checked against the required permissions for a given action.
+Permissions are stored in a variable-length integer serialized into a string, and are calculated using bitwise operations.
