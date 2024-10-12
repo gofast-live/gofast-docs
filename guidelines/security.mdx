@@ -9,7 +9,7 @@ icon: "shield"
 ### JWT-Based Authentication
 
 - JWT Authentication: The system uses JSON Web Tokens (JWT) with refresh token rotation for managing user sessions.
-- Encryption: JWTs are encrypted using EdDSA for enhanced security.
+- Encryption: JWTs are encrypted using `EdDSA` for enhanced security.
 - Token can be invalidated: Refresh tokens allow generating new JWTs and can be manually invalidated by clearing the `user_id` in the `user_tokens` table.
 - Server-Side Security: As much logic as possible is handled on the server side to maintain security.
 - Key Management:
@@ -19,3 +19,7 @@ icon: "shield"
 ```bash
 cd scripts && sh key.sh
 ```
+
+### Next.js specific implementation
+
+Because of the limitaions of middleware in Next.js (Edge environment), the public key is stored in the environment variable `JWT_KEY`.
