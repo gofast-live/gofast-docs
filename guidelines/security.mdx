@@ -1,7 +1,21 @@
 ---
-title: 'Security'
-description: 'Authentication and Authorization'
-icon: 'shield'
+title: "Security"
+description: "Authentication and Authorization"
+icon: "shield"
 ---
 
-In progress...
+## Authentication
+
+### JWT-Based Authentication
+
+- JWT Authentication: The system uses JSON Web Tokens (JWT) with refresh token rotation for managing user sessions.
+- Encryption: JWTs are encrypted using EdDSA for enhanced security.
+- Token can be invalidated: Refresh tokens allow generating new JWTs and can be manually invalidated by clearing the `user_id` in the `user_tokens` table.
+- Server-Side Security: As much logic as possible is handled on the server side to maintain security.
+- Key Management:
+  - Private/Public Key Pair: The system uses a private/public key pair for token validation.
+  - Key Generation: To generate new keys, run the script:
+
+```bash
+cd scripts && sh key.sh
+```
