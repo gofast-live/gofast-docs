@@ -10,11 +10,11 @@ This choice can be made using the **GoFast CLI** or by modifying the `docker-com
 
 ### via CLI
 
-Possible options are `Postmark`, `SendGrid`, `Resend` and `Local (log)`.
+Possible options are `Postmark`, `SendGrid`, `Resend`, `AWS SES` and `Local (log)`
 
 ### via Docker Compose
 
-Possible options are `postmark`, `sendgrid`, `resend` and `local`.
+Possible options are `postmark`, `sendgrid`, `resend`, `ses` and `local`.
 
 ### Emails Configuration
 
@@ -23,6 +23,7 @@ Depending on the provider, you need to set the following environment variables i
 - for `postmark`, set `POSTMARK_API_KEY`.
 - for `sendgrid`, set `SENDGRID_API_KEY`.
 - for `resend`, set `RESEND_API_KEY`.
+- for `ses`, set `SES_ACCESS_KEY`, `SES_SECRET_KEY`, and `SES_REGION`.
 - for `local`, no configuration is needed.
 
 ```yaml
@@ -36,6 +37,10 @@ services:
       # SENDGRID_API_KEY: ${SENDGRID_API_KEY}
       # EMAIL_PROVIDER: resend
       # RESEND_API_KEY: ${RESEND_API_KEY}
+      # EMAIL_PROVIDER: ses
+      # SES_ACCESS_KEY: ${SES_ACCESS_KEY}
+      # SES_SECRET_KEY: ${SES_SECRET_KEY}
+      # SES_REGION: ${SES_REGION}
       # EMAIL_PROVIDER: local
 ```
 
@@ -50,6 +55,7 @@ const (
 	Postmark Provider = "postmark"
 	Sendgrid Provider = "sendgrid"
 	Resend   Provider = "resend"
+    Ses      Provider = "ses"
 	Local    Provider = "local"
     Mailgun  Provider = "mailgun"
 )
@@ -120,6 +126,28 @@ services:
 4. Click on the `Create API Key` button.
 5. Copy the key and set it as the `RESEND_API_KEY` in the `docker-compose.yml` file.
 
+### AWS SES
+
+1. Go to the [AWS](https://aws.amazon.com/) website.
+2. Create an account or log in.
+3. Go to the [IAM](https://console.aws.amazon.com/iam/home) page.
+4. Click on the `Users` tab.
+5. Click on the `Add user` button.
+6. Fill in the user details and click on the `Next: Permissions` button.
+7. Click on the `Attach existing policies directly` button.
+8. Search for `AmazonSESFullAccess` and select it.
+9. Click on the `Next: Tags` button.
+10. Click on the `Next: Review` button.
+11. Click on the `Create user` button.
+12. Copy the `Access key ID` and `Secret access key` and set them as the `SES_ACCESS_KEY` and `SES_SECRET_KEY` in the `docker-compose.yml` file.
+13. Go to the [SES](https://console.aws.amazon.com/ses/home) page.
+14. Click on the `Email addresses` tab.
+15. Click on the `Verify a New Email Address` button.
+16. Enter the email address you want to verify and click on the `Verify This Email Address` button.
+17. Go to the [SES](https://console.aws.amazon.com/ses/home) page.
+18. Click on the `Regions` tab.
+19. Copy the region and set it as the `SES_REGION` in the `docker-compose.yml` file.
+20. Cry for using AWS.
 
 ## Need help?
 
