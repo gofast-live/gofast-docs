@@ -31,6 +31,7 @@ services:
       PAYMENT_PROVIDER: stripe
       STRIPE_API_KEY: ${STRIPE_API_KEY}
       STRIPE_PRICE_ID: ${STRIPE_PRICE_ID}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       # PAYMENT_PROVIDER: lemon
       # LEMON_API_KEY: ${LEMON_API_KEY}
       # LEMON_VARIANT_ID: ${LEMON_VARIANT_ID}
@@ -124,20 +125,24 @@ services:
       PAYMENT_PROVIDER: paddle
       PADDLE_API_KEY: ${PADDLE_API_KEY}
       PADDLE_PRICE_ID: ${PADDLE_PRICE_ID}
+      PADDLE_WEBHOOK_SECRET: ${PADDLE_WEBHOOK_SECRET}
 ```
 
 ## Getting Secrets
 
 ### Stripe
 
-To get the `STRIPE_API_KEY` and `STRIPE_PRICE_ID`, you need to create an account on the [Stripe](https://dashboard.stripe.com) website and get the keys from the dashboard.
+To get the `STRIPE_API_KEY`, `STRIPE_PRICE_ID` and `STRIPE_WEBHOOK_SECRET`, you need to create an account on the [Stripe](https://dashboard.stripe.com) website and get the keys from the dashboard.
 
-1. Go to the [Stripe Api Section](https://dashboard.stripe.com/test/apikeys).
+1. Go to the [Stripe Api Section](https://dashboard.stripe.com/apikeys).
 2. Copy the `Secret Key` and set it as the `STRIPE_API_KEY`.
-3. Create a new product and price in the [Products](https://dashboard.stripe.com/test/products) section.
+3. Create a new product and price in the [Products](https://dashboard.stripe.com/products) section.
 4. Go to the `Prices` tab and create a new price.
 5. Go to the price details.
 6. Copy the `Price ID` and set it as the `STRIPE_PRICE_ID`.
+7. Go to the [Webhooks](https://dashboard.stripe.com/webhooks) section.
+8. Create a new webhook with a `Signing Secret`.
+9. Copy the `Signing Secret` and set it as the `STRIPE_WEBHOOK_SECRET`.
 
 ### Lemon Squeezy
 
