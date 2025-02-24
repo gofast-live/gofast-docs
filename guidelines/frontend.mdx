@@ -1,8 +1,16 @@
 ---
 title: 'Frontend'
-description: 'Guidelines for structure, performance, and maintainability.'
+description: 'Support for SvelteKit, Next.js, Vue.js and HTMX'
 icon: 'desktop'
 ---
+
+## Implementation Details
+
+- We have two panels: **client** and **admin**.
+- The **client panel** is built with SvelteKit, Next.js, or Vue.js.
+- The **admin panel** is built with Go + HTMX.
+- The **client panel** communicates with the main server using HTTP.
+- The **admin panel** communicates with the main server using gRPC.
 
 ## Philosophy
 

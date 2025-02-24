@@ -49,7 +49,6 @@
     {
       "group": "Configuration",
       "pages": [
-        "configuration/frontend",
         "configuration/database",
         "configuration/oauth",
         "configuration/payments",

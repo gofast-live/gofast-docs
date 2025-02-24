@@ -4,7 +4,7 @@ description: 'Errors and Form Validations Guidelines'
 icon: 'bomb'
 ---
 
-## Go
+## Backend
 
 1. We follow the rule of handling an error only once, which means you either return the error or log it, but never do both.
 2. If more context is needed, wrap the error using `fmt.Errorf("...: %w")`.
@@ -14,7 +14,7 @@ icon: 'bomb'
     - **gRPC** - Invalid Argument 3
 5. ALL ERRORS are checked.
 
-## SvelteKit / NextJS
+## Frontend
 
 1. We use a wrapper around `try / catch` that forces you to handle errors. It aims to mimic what Go or Rust do (tries, JS error handling sucks).
 2. The wrapper is called `Safe`, and you can find its logic in `safe.ts` file. For more information, please check the article: [Typescript with Go/Rust Errors: No Try/Catch Heresy](https://dev.to/mpiorowski/typescript-with-gorust-errors-no-trycatch-heresy-49mf)
