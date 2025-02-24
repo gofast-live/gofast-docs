@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: 'Welcome to the GoFast Beta!'
+description: 'Welcome to the GoFast!'
 ---
 
 <img
@@ -16,48 +16,42 @@ description: 'Welcome to the GoFast Beta!'
 
 ## What is GoFast?
 
-The Ultimate Foundation for High-Performance, Scalable Web Applications with the Power of Golang and SvelteKit/Next.js. Backed by a powerful CLI.
+The Ultimate Foundation for building High-Performance, Scalable, Modern Web Applications. Backed by a powerful CLI.
 
-This is an opinionated skeleton designed to help you build durable and maintainable applications.
-
-This is not another "template" that includes 90% of the features you will never use.
+Not 'built in days' bullshit.
 
 You will need to code.
 
-## What's included
+But it will work.
+
+## Architecture
+
+![Overview](/images/diagram.webp)
+
+## Features
 
 GoFast is powered by the CLI that will guide you through the configuration:
-- SvelteKit or NextJS
-- HTTP or gRPC
+- SvelteKit, NextJS, Vue.js, or HTMX
+- HTTP and gRPC
 - OAuth flow without any external provider + Magic Links
-- Payments with webhooks using Stripe (Lemon Squeezy in the way)
-- Emails sending using Postmark, Sengrid, or Resend
-- Files storage using Cloudflare R2, AWS S3, or Google Cloud Storage
-- Grafana Loki + Prometheus
-- Full setup with Docker and Docker Compose + GitHub Actions for linting and testing
+- Payments with secure webhooks using Stripe or Lemon Squeezy
+- Emails sending using Postmark, Sengrid, Resend, or AWS SES
+- Files storage using Cloudflare R2, AWS S3, Google Cloud Storage, or Azure Blob Storage
+- Proper CI/CD setup using GitHub Actions, with auto releases
+- Grafana Loki + Prometheus Monitoring
+- Full Kubernetes setup with Helm charts + Victoria Metrics + CloudNativePG
 
 ## Philosophy
 
-- We believe that combining a robust backend language with a powerful frontend framework is the way to go.
 - The backbone of the app is Go, which handles all the important logic. Why Go?
     - Go is a simple language with exceptional performance.
     - Due to Go's straightforward nature, there aren't countless ways to do things, making code review and consistency much easier.
     - One of its undervalued strengths is its ease of introduction to new programmers.
     - Go has an amazing set of native libraries.
     - Errors as values are amazing.
+- We believe that combining a robust backend language with a "simple" frontend framework is the best way to build a scalable, maintainable, and high-performance application.
 - We primarily use Dependency Injection and the Strategy Pattern, keeping abstractions to a minimum. Always go for simplicity.
-- For the frontend, we advocate for SvelteKit, but we also recognize the value and popularity of Next.js.
-In both cases, we keep up with the newest versions and follow proposed approaches (SSR, Form Actions, Server Actions).
 - Minimize external dependencies: This enhances code maintainability and simplifies long-term changes. It's the way to go. It will make your life simpler. 
-In fact our dependencies are so few that we will just list them:
-    - Library for gRPC implementation
-    - Library for logging
-    - Library for JWT
-    - Database drivers
-    - OAuth library
-    - Files provider libraries
-    - Payments provider libraries
-    - TailwindCSS
 
 ## Let's get started
 

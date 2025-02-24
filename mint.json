@@ -44,19 +44,19 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
+      "pages": ["introduction", "quickstart"]
     },
     {
       "group": "Configuration",
       "pages": [
         "configuration/frontend",
-        "configuration/protocol",
         "configuration/database",
         "configuration/oauth",
         "configuration/payments",
         "configuration/emails",
         "configuration/files",
-        "configuration/monitoring"
+        "configuration/monitoring",
+        "configuration/protocol"
       ]
     },
     {

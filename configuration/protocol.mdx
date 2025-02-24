@@ -1,37 +1,26 @@
 ---
 title: "Protocol"
-description: "Choose between HTTP or gRPC"
+description: "Support for both HTTP and gRPC"
 icon: "webhook"
 ---
 
-## Configuration
-
-This choice must be made using the **GoFast CLI**. Possible options are `HTTP` and `gRPC`.
-
 ## Implementation Details
 
-- **HTTP** implementation will remove all gRPC code, proto files and libraries.
-- **gRPC** implementation uses streams for all queries, and unary for all mutations.
-- **gRPC** implementation will still have some HTTP routes:
-  - Payments webhook.
-  - Files functionality. gRPC is just not the best solution to handle file uploads and downloads.
+- **HTTP (SvelteKit, Next.js, or Vue.js)** is used between the client panel  and the main server.
+- **gRPC (HTMX)** is used between the admin panel and the main server.
 
-### gRPC generation
+## gRPC generation
 
-For gRPC implementation, all proto files are inside the `proto` folder. After making any changes, we need to generate new types for both the server and client.
+Make sure you have the latest version of the `protoc-gen-go` plugin installed:
 
 ```bash
-cd scripts && sh proto.sh
-```
-
-This script will take care of type generation and propagation, but it depends on two libraries, so make sure you have them globally installed:
-
-- `protoc`
-- `proto-loader-gen-types`
-
-```
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+```
+
+For gRPC implementation, all proto files are inside the `proto` folder. After making any changes, we need to generate new types:
+
+```bash
+sh scripts/proto.sh
 ```
 
 ## Need help?
