@@ -4,10 +4,38 @@ description: "Choose between PostgreSQL, Turso with Embedded Replicas, or SQLite
 icon: "database"
 ---
 
-## Configuration
+## Implementation
 
-This is one of the settings that will require some coding.
+- Database Migration: [AtlasGo](https://atlasgo.io/docs)
+- SQL generation: [sqlc](https://sqlc.dev)
+- Database: [PostgreSQL](https://www.postgresql.org/), [Turso](https://turso.tech/), or [SQLite](https://www.sqlite.org/index.html)
 
+## Basic Flow
+
+1. Spin up the docker compose.
+2. Make changes to the `service-go-user/storage/schema.sql` file.
+3. Run **AtlasGo** migration:
+
+```bash
+sh scripts/atlas.sh
+```
+
+4. Modify `service-go-user/storage/queries.sql` file.
+5. Run **sqlc** to generate the SQL code:
+
+```bash
+sh scripts/sqlc.sh
+```
+
+## Change Database
+
+By default, the project uses local **PostgreSQL**. To change the database, you need to modify the following files:
+
+- `scripts/atlas.sh` - change the database connection string and docker dev image.
+- `service-go-user/storage/sqlc.yaml` - change the database configuration.
+- `service-go-user/storage/schema.sql` - change the schema to match the new database.
+- `service-go-user/storage/queries.sql` - change the queries to match the new database.
+- `service-go-user/storage/storage.go` - change the database implementation by commenting/uncommenting the database provider.
 
 ## Troubleshooting
 

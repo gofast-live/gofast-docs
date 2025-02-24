@@ -6,14 +6,14 @@ icon: "shield"
 
 ## Authentication
 
-The main logic is located in the `system/jwt.go` file.
+The main logic is located in the `auth/auth.go` file.
 
 ### JWT-Based Authentication
 
 - JWT Authentication: The system uses JSON Web Tokens (JWT) with refresh token rotation for managing user sessions.
 - Encryption: JWTs are encrypted using `EdDSA` for enhanced security.
 - Server-Side Security: As much logic as possible is handled on the server side to maintain security.
-- Token can be invalidated: Refresh tokens allow generating new JWTs and can be manually invalidated by clearing the `user_id` in the `user_tokens` table.
+- Token can be invalidated: Refresh tokens allow generating new JWTs and can be manually invalidated by clearing the `user_id` in the `tokens` table.
 - Transport:
   - For `HTTP`, the tokens are sent in the `authorization` header as `Bearer` tokens.
   - For `gRPC`, the tokens are sent in the `metadata` as `authorization` tokens.
@@ -22,32 +22,8 @@ The main logic is located in the `system/jwt.go` file.
   - Key Generation: To generate new keys, run the script:
 
 ```bash
-cd scripts && sh key.sh
+sh scripts/keys.sh
 ```
-
-**Remember to change the `JWT_KEY` environment variable to the new public key if you are using the Next.js implementation!**
-
-#### Generating Tokens
-
-```go
-jwtToken, jwtRefreshToken, err := system.GenerateTokens(refreshToken.Id, user.Id, user.Access, system.GetAccessRoutes(user.Access), user.Avatar, user.Email, subscriptionActive)
-if err != nil {
-    return nil, system.ErrUnauthorized{Err: fmt.Errorf("Error generating JWT token: %w", err)}
-}
-```
-
-#### Validating Tokens
-
-```go
-user, err := system.ValidateToken(token)
-if err != nil {
-    return system.ErrUnauthorized{Err: err}
-}
-```
-
-### Next.js specific implementation
-
-Because of the limitaions of middleware in Next.js (Edge environment), the public key is stored in the environment variable `JWT_KEY` as string.
 
 ## Authorization
 

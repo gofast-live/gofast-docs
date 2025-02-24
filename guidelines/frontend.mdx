@@ -4,13 +4,21 @@ description: 'Support for SvelteKit, Next.js, Vue.js and HTMX'
 icon: 'desktop'
 ---
 
-## Implementation Details
+## Architecture
 
 - We have two panels: **client** and **admin**.
 - The **client panel** is built with SvelteKit, Next.js, or Vue.js.
 - The **admin panel** is built with Go + HTMX.
 - The **client panel** communicates with the main server using HTTP.
 - The **admin panel** communicates with the main server using gRPC.
+
+## Framework-Specific Guidelines
+
+- **TailwindCSS**: Standard across all frameworks.
+- **Go + HTMX**: Uses Templ, Alpine.js, Morph plugin, and SSE plugin.
+- **SvelteKit**: Focus on SSR, Form Actions, and Runes.
+- **Next.js**: Emphasizes SSR, App Router, and Server Actions.
+- **Vue.js**: Primarily for simple client-side rendering.
 
 ## Philosophy
 
@@ -26,10 +34,3 @@ icon: 'desktop'
 - **Server-Side When Needed**: Offload complex validation to the backend.
 - **Clear User Feedback**: Show meaningful error messages, not just generic alerts.
 
-## Framework-Specific Guidelines
-
-- **TailwindCSS**: Standard across all frameworks.
-- **Go + HTMX**: Uses Templ, Alpine.js, Morph plugin, and SSE plugin.
-- **SvelteKit**: Focus on SSR, Form Actions, and Runes.
-- **Next.js**: Emphasizes SSR, App Router, and Server Actions.
-- **Vue.js**: Primarily for simple client-side rendering.
