@@ -1,0 +1,27 @@
+---
+title: 'Frontend'
+description: 'Guidelines for structure, performance, and maintainability.'
+icon: 'desktop'
+---
+
+Philosophy
+
+- **Keep It Simple**: The frontend should be a thin layer, handling only UI and interactions.
+- **Reusability First**: Build components that are modular and composable.
+- **Consistency Matters**: Follow a unified design and behavior across components.
+- **Optimized for Speed**: Prioritize fast, responsive UI performance.
+- **Minimal Dependencies**: Use only essential libraries to reduce bloat.
+
+Validation
+
+- **Start with Native HTML**: Use built-in validation (required, pattern, min, max, etc.) whenever possible.
+- **Server-Side When Needed**: Offload complex validation to the backend.
+- **Clear User Feedback**: Show meaningful error messages, not just generic alerts.
+
+## Framework-Specific Guidelines
+
+- **TailwindCSS**: Standard across all frameworks.
+- **Go + HTMX**: Uses Templ, Alpine.js, Morph plugin, and SSE plugin.
+- **SvelteKit**: Focus on SSR, Form Actions, and Runes.
+- **Next.js**: Emphasizes SSR, App Router, and Server Actions.
+- **Vue.js**: Primarily for simple client-side rendering.

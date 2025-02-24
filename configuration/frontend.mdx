@@ -1,22 +1,20 @@
 ---
 title: 'Frontend'
-description: 'Choose between SvelteKit or NextJS'
+description: 'Support for SvelteKit, Next.js, Vue.js and HTMX'
 icon: 'browser'
 ---
 
-## Configuration
-
-This choice must be made using the **GoFast CLI**. Possible options are `SvelteKit`, `Next.js` and `None`. 
-
 ## Implementation Details
 
-- We heavily utilize SSR.
-- We keep the frameworks up to date.
-- We use `Form Action` for SvelteKit and `Server Actions` for NextJS.
-- The logic is extracted to the `server/services` folder. The route pages try to have as little logic as possible, only passing the required parameters.
-- We strongly advocate for the Component Composition pattern.
+- We have two panels: **client** and **admin**.
+- The **client panel** is built with SvelteKit, Next.js, or Vue.js.
+- The **admin panel** is built with HTMX.
+- The **client panel** communicates with the main server using HTTP.
+- The **admin panel** communicates with the main server using gRPC.
 
-For more information, check our **Guidelines** section.
+## Configuration
+
+The **admin** panel with HTMX will always be available. You can choose between SvelteKit, Next.js, or Vue.js for the **client** panel. The recommended way to do it is by using the GoFast CLI.
 
 ## Troubleshooting
 

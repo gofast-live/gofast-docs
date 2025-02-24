@@ -62,6 +62,7 @@
     {
       "group": "Guidelines",
       "pages": [
+        "guidelines/frontend",
         "guidelines/security",
         "guidelines/errors"
       ]
