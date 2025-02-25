@@ -27,7 +27,7 @@ sh scripts/keys.sh
 
 ## Authorization
 
-The main logic is located in the `system/access.go` file.
+The main logic is located in the `auth/auth.go` file.
 
 ### Role-Based Access Control (RBAC)
 
@@ -61,8 +61,8 @@ const (
 #### Checking Permissions
 
 ```go
-access := system.NewAccess(user.Access)
-if !access.HasAccess(system.READ_NOTES) {
+access := auth.NewAccess(user.Access)
+if !access.HasAccess(auth.READ_NOTES) {
     return system.ErrForbidden{Message: "Access denied"}
 }
 ```
@@ -87,7 +87,7 @@ func CheckUserAttr(access int64, userAttr *UserAttr) bool {
 And then check the access:
 
 ```go
-if !system.NewAccessWithAttr(user.Access, userAttr).HasAccess(system.UPDATE_NOTE) {
+if !auth.NewAccessWithAttr(user.Access, userAttr).HasAccess(auth.UPDATE_NOTE) {
     return system.ErrForbidden{Message: "Access denied"}
 }
 ```
@@ -99,12 +99,12 @@ The flow start with extracting the token from the request, either from the `auth
 Then, in the service layer, validate the token and check the access:
 
 ```go
-user, err := system.ValidateToken(token)
+user, err := sauthystem.ValidateToken(token)
 if err != nil {
     return system.ErrUnauthorized{Err: err}
 }
-access := system.NewAccess(user.Access)
-if !access.HasAccess(system.READ_NOTES) {
+access := auth.NewAccess(user.Access)
+if !access.HasAccess(auth.READ_NOTES) {
     return system.ErrForbidden{Message: "Access denied"}
 }
 ```
