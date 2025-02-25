@@ -1,5 +1,36 @@
 ---
 title: 'Deployment'
-description: 'Deploy your application using Kubernetes'
+description: 'Deploy your application using Kubernetes or Docker'
 icon: 'server'
 ---
+
+## Implementation
+
+We provide two ways of deploying your application:
+- **Kubernetes**: A full guide on deploying your application using **Kubernetes**, with **VictoriaMetrics** as the monitoring solution and optional **CloudNativePG** as the database.
+- **Docker**: A preconfigured **Docker Compose** setup with corresponding **Dockerfiles** for each service, including optional **Grafana + Loki + Prometheus Monitoring** stack.
+
+The recommended way is to use **Kubernetes** for production and **Docker** for development, mostly because of the **CI/CD** is prepared for Kubernetes.
+
+## Configuration
+
+This choice must be made using the **GoFast CLI**. Possible options are `Kubernetes + VictoriaMetrics Monitoring`, `Grafana + Loki + Prometheus Monitoring` and `None`.
+
+## Kubernetes
+
+A complete deployment guide is available in **kube/README.md**.
+
+## Docker
+
+Each service includes its own multistage **Dockerfile**, with the full stack managed by **Docker Compose**.
+
+For production, switch the **docker-compose.yml** stage from `dev` to `prod`.
+
+For additional monitoring, use the **Grafana + Loki + Prometheus Monitoring** stack. See `grafana/README.md` for details.
+
+
+## Need help?
+
+Visit our discord server to ask any questions, make suggestions and give feedback :).
+
+https://discord.gg/EdSZbQbRyJ

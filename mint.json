@@ -55,7 +55,6 @@
         "configuration/emails",
         "configuration/files",
         "configuration/protocol",
-        "configuration/monitoring",
         "configuration/deployment"
       ]
     },
