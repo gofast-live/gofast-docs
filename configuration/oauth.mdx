@@ -4,6 +4,12 @@ description: "Fully working OAuth flow without any external provider + Magic Lin
 icon: "right-to-bracket"
 ---
 
+## Implementation
+
+The main logic can be found in the `service-go-user/domain/login/provider.go` file.
+
+The OAuth implementation does not depend on any external providers. It's built using the `golang.org/x/oauth2` library.
+
 ## Configuration
 
 The base application includes configurations for two providers: **Google** and **GitHub**, plus a **Magic Link** option.
@@ -13,7 +19,7 @@ The base application includes configurations for two providers: **Google** and *
 
 ```yaml
 services:
-  server:
+  go-user:
     environment:
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
@@ -21,111 +27,7 @@ services:
       GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
 ```
 
-The **Magic Link** option requires only a working email provider. If the `log` option is chosen for email configuration, the magic link will appear in the application logs.
-
-## Implementation Details
-
-The OAuth implementation does not depend on any external providers. It's built using the `golang.org/x/oauth2` library. The main logic can be found in the `/auth/provider.go` file.
-
-## Adding a new provider
-
-To add a new provider, follow these steps in the `/auth/provider.go` file:
-
-### Backend
-
-1. Add the new provider to the `Provider` constant.
-
-```go
-const (
-    Google Provider = "google"
-    GitHub Provider = "github"
-    Email Provider = "email"
-    Discord Provider = "discord"
-)
-```
-
-2. Create a new provider struct.
-
-```go
-type oauthDiscord struct {
-	config oauth2.Config
-}
-```
-
-3. Return the new provider in the `NewProvider` function:
-
-```go
-case Discord:
-    return &oauthDiscord{
-        config: oauth2.Config{
-            ClientID:     system.DISCORD_CLIENT_ID,
-            ClientSecret: system.DISCORD_CLIENT_SECRET,
-            Endpoint: oauth2.Endpoint{
-                AuthURL:  "https://discord.com/api/oauth2/authorize",
-                TokenURL: "https://discord.com/api/oauth2/token",
-            },
-            RedirectURL: system.CLIENT_URL + "/auth/discord",
-            Scopes:      []string{"identify", "email"},
-        },
-    }
-```
-
-4. Implement the required methods:
-
-```go
-func (o *oauthDiscord) getProvider() Provider {
-    return Discord
-}
-
-func (o *oauthDiscord) getOAuthConfig() *oauth2.Config {
-    return &o.config
-}
-
-func (o *oauthDiscord) getUserInfo(accessToken string) (*UserInfo, error) {
-    // Implement the logic to get the user info
-}
-```
-
-5. Add any new secrets in the `env.go` file.
-
-6. Fill in the `docker-compose.yml` file with the new provider configuration.
-
-```yaml
-services:
-  server:
-    environment:
-      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
-      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
-```
-
-### Frontend
-
-On the frontend side, all you need to do is create a new form with a button and a hidden input that holds the new provider name.
-
-SvelteKit:
-
-```ts
-<form action="?/login" method="post" on:submit|preventDefault={handleSubmit}>
-    <input type="hidden" name="provider" value="discord" />
-    <Button class="w-full">
-        <svelte:fragment slot="icon">
-            <DiscordIcon class="h-5 w-5" />
-        </svelte:fragment>
-        Continue with Discord
-    </Button>
-</form>
-```
-
-NextJS:
-
-```ts
-<form action={submit}>
-    <input type="hidden" name="provider" value="discord" />
-    <Button className="w-full" icon={<DiscordIcon className="h-5 w-5" />}>
-        Continue with Discord
-    </Button>
-</form>
-```
+The **Magic Link** option requires a working email provider. If the `log` option is chosen for email configuration, the magic link will appear in the application logs.
 
 ## Getting Secrets
 

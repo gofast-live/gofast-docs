@@ -4,6 +4,33 @@ description: "Choose between Stripe, or Lemon Squeezy (not implemented)"
 icon: "credit-card"
 ---
 
+## Implementation
+
+The payments implementation can generate the client **Checkout Session** to process payments, the **Customer Portal** to check invoices, and includes a **Webhook** implementation to listen for changes.
+The flow is as follows:
+
+1. The user clicks the subscribe button, sending a request to the backend.
+2. The backend generates a Checkout URL.
+3. The user completes the order.
+4. A webhook on the backend listens for changes and updates the client's status accordingly.
+5. After the client is created in the payment provider, they can visit their customer portal to check all invoices.
+
+The local provider is a mock implementation that doesn't require any configuration. It generates a random customer ID and subscription end date.
+
+### Webhook
+
+Since the webhook needs to listen for changes, the gRPC configuration still includes an HTTP server.
+The payments webhook has a separate file for HTTP routes: `service-go-user/http/route_webhook.go`.
+Regardless of the provider, remember to set up the webhook URL in the provider's dashboard, pointing to the `/payments/webhook` route.
+
+To test Stripe webhook locally, you can use the Stripe CLI, authenticate, and forward the events to the local server:
+
+```bash
+sh scripts/stripe.sh
+```
+
+Lemon Squeezy doesn't have a CLI, so you need to set up a tunnel to forward the events to the local server. One option is [Cloudflare Tunnel](https://one.dash.cloudflare.com).
+
 ## Configuration
 
 This choice can be made using the **GoFast CLI** or by modifying the `docker-compose.yml` file.
@@ -37,95 +64,6 @@ services:
       # LEMON_VARIANT_ID: ${LEMON_VARIANT_ID}
       # LEMON_STORE_ID: ${LEMON_STORE_ID}
       # PAYMENT_PROVIDER: local
-```
-
-## Implementation
-
-The payments implementation can generate the client **Checkout Session** to process payments, the **Customer Portal** to check invoices, and includes a **Webhook** implementation to listen for changes.
-The flow is as follows:
-
-1. The user clicks the subscribe button, sending a request to the backend.
-2. The backend generates a Checkout URL.
-3. The user completes the order.
-4. A webhook on the backend listens for changes and updates the client's status accordingly.
-5. After the client is created in the payment provider, they can visit their customer portal to check all invoices.
-
-The local provider is a mock implementation that doesn't require any configuration. It generates a random customer ID and subscription end date.
-
-### Webhook
-
-Since the webhook needs to listen for changes, the gRPC configuration still includes an HTTP server.
-The payments webhook has a separate file for HTTP routes: `/http/route_webhook.go`.
-Regardless of the provider, remember to set up the webhook URL in the provider's dashboard, pointing to the `/payments/webhook` route.
-
-To test Stripe webhook locally, you can use the Stripe CLI, authenticate, and forward the events to the local server:
-
-```bash
-stripe listen --forward-to localhost:4002/payments/webhook
-```
-
-Lemon Squeezy doesn't have a CLI, so you need to set up a tunnel to forward the events to the local server. One option is [Cloudflare Tunnel](https://one.dash.cloudflare.com).
-
-## Adding a New Provider
-
-To add a new provider, follow these steps in the `/payment/provider.go` file:
-
-1. Add the new provider to the `Provider` constant.
-
-```go
-const (
-    stripe Provider = "stripe"
-    lemon Provider = "lemon"
-    local Provider = "local"
-    paddle Provider = "paddle"
-)
-```
-
-2. Create a new provider struct.
-
-```go
-type paddleProvider struct{}
-```
-
-3. Return the new provider in the `NewProvider` function:
-
-```go
-case Poodle:
-    return &paddleProvider{}
-```
-
-4. Implement the required methods:
-
-```go
-func (p *paddleProvider) createCustomer(ctx context.Context, userEmail string) (customerId string, err error) {
-    // Implement the logic to create a customer
-}
-
-func (p *paddleProvider) createPaymentCheckout(ctx context.Context, subscriptionId string) (url string, err error) {
-    // Implement the logic to create a payment checkout
-}
-
-func (p *paddleProvider) createPaymentPortal(ctx context.Context, subscriptionId string) (url string, err error) {
-    // Implement the logic to create a payment portal
-}
-
-func (p *paddleProvider) handleWebhook(ctx context.Context, payload []byte) (customerId string, subEndDate *time.Time, err error) {
-    // Implement the logic to handle a webhook
-}
-```
-
-5. Add any new secrets in the `env.go` file.
-
-6. Fill in the `docker-compose.yml` file with the new provider configuration.
-
-```yaml
-services:
-  server:
-    environment:
-      PAYMENT_PROVIDER: paddle
-      PADDLE_API_KEY: ${PADDLE_API_KEY}
-      PADDLE_PRICE_ID: ${PADDLE_PRICE_ID}
-      PADDLE_WEBHOOK_SECRET: ${PADDLE_WEBHOOK_SECRET}
 ```
 
 ## Getting Secrets
