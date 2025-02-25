@@ -7,10 +7,13 @@ icon: 'server'
 ## Implementation
 
 We provide two ways of deploying your application:
-- **Kubernetes**: A full guide on deploying your application using **Kubernetes**, with **VictoriaMetrics** as the monitoring solution and optional **CloudNativePG** as the database.
+- **Kubernetes**: A full guide on deploying your application using:
+    - [Kubernetes](https://kubernetes.io/)
+    - [VictoriaMetrics](https://victoriametrics.com/)
+    - [CloudNativePG](https://cloudnative-pg.io/)
 - **Docker**: A preconfigured **Docker Compose** setup with corresponding multistage **Dockerfiles** for each service, including optional **Grafana + Loki + Prometheus Monitoring** stack.
 
-The recommended way is to use **Kubernetes** for production and **Docker** for development, mostly because of the **CI/CD** is prepared for Kubernetes.
+The recommended approach is to use **Kubernetes** for production and **Docker** for development, as the **CI/CD** pipeline is optimized for Kubernetes.
 
 ## Configuration
 
@@ -18,7 +21,7 @@ This choice must be made using the **GoFast CLI**. Possible options are `Kuberne
 
 ## Kubernetes
 
-A complete deployment guide is available in **kube/README.md**.
+A complete deployment guide is available in **kube/README.md** directory.
 
 ## Docker
 
@@ -26,7 +29,7 @@ Each service includes its own multistage **Dockerfile**, with the full stack man
 
 For production, switch the **docker-compose.yml** stage from `dev` to `prod`.
 
-For additional monitoring, use the **Grafana + Loki + Prometheus Monitoring** stack. See `grafana/README.md` for details.
+For additional monitoring, use the **Grafana + Loki + Prometheus Monitoring** stack. See `grafana/README.md` directory for more information.
 
 ## Need help?
 

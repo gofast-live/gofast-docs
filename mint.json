@@ -54,7 +54,6 @@
         "configuration/payments",
         "configuration/emails",
         "configuration/files",
-        "configuration/protocol",
         "configuration/deployment"
       ]
     },
@@ -63,7 +62,9 @@
       "pages": [
         "guidelines/frontend",
         "guidelines/security",
-        "guidelines/errors"
+        "guidelines/errors",
+        "guidelines/protocol",
+        "guidelines/cicd"
       ]
     },
     {
