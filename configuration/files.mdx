@@ -1,8 +1,14 @@
 ---
 title: "Files"
-description: "Choose between Cloudfalre R2, AWS S3, or Google Cloud Storage"
+description: "Choose between Cloudfalre R2, AWS S3, Google Cloud Storage, or Azure Blob Storage"
 icon: "files"
 ---
+
+## Implementations
+
+The main logic can be found in the `service-go-user/domain/file/provider.go` file.
+
+The local provider stores files in a local folder, while the other providers store files in their respective cloud storage services.
 
 ## Configuration
 
@@ -10,11 +16,11 @@ This choice can be made using the **GoFast CLI** or by modifying the `docker-com
 
 ### via CLI
 
-Possible options are `Cloudflare R2`, `AWS S3`, `Google Cloud Storage` and `Local (folder)`.
+Possible options are `Cloudflare R2`, `AWS S3`, `Google Cloud Storage`, `Azure Blob Storage` and `Local (folder)`.
 
 ### via Docker Compose
 
-Possible options are `r2`, `s3`, `gcs` and `local`.
+Possible options are `r2`, `s3`, `gcs`, `azblobl` and `local`.
 
 ### Files Configuration
 
@@ -23,6 +29,7 @@ Depending on the provider, you need to set the following environment variables i
 - for `r2`, set `R2_ENDPOINT`, `R2_ACCESS_KEY`, and `R2_SECRET_KEY`.
 - for `s3`, set `S3_REGION`, `S3_ACCESS_KEY`, and `S3_SECRET_KEY`.
 - for `gcs`, set `GOOGLE_APPLICATION_CREDENTIALS`.
+- for `azblob`, set `AZBLOB_ACCOUNT_NAME` and `AZBLOB_ACCOUNT_KEY`.
 - for `local`, set `FILE_DIR`.
 
 ```yaml
@@ -40,81 +47,12 @@ services:
       # S3_SECRET_KEY: ${S3_SECRET_KEY}
       # FILE_PROVIDER: gcs
       # GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+      # FILE_PROVIDER: azblob
+      # AZBLOB_ACCOUNT_NAME: ${AZBLOB_ACCOUNT_NAME}
+      # AZBLOB_ACCOUNT_KEY: ${AZBLOB_ACCOUNT_KEY}
       # FILE_PROVIDER: local
       # FILE_DIR: ${FILE_DIR}
 ```
-
-## Implementations
-
-Regardless of the protocol configuration, File operations (uploads and downloads) will always be handled using HTTP requests. This approach is much simpler to implement compared to using gRPC, which would require splitting files into chunks.
-
-The files have a seperate file for HTTP routes: `/http/route_file.go`.
-
-The local provider stores files in a local folder, while the other providers store files in their respective cloud storage services.
-
-## Adding a New Provider
-
-To add a new provider, follow these steps in the `/file/provider.go` file:
-
-1. Add the new provider to the `Provider` constant.
-
-```go
-const (
-	S3    Provider = "s3"
-	R2    Provider = "r2"
-	GCS   Provider = "gcs"
-	Local Provider = "local"
-    Azure Provider = "azure"
-)
-```
-
-2. Create a new provider struct.
-
-```go
-type azureProvider struct {
-    // Add any required fields here
-}
-```
-
-3. Return the new provider in the `NewProvider` function:
-
-```go
-case Azure:
-    return &azureProvider{
-        // Initialize the fields here
-    }
-```
-
-4. Implement the required methods:
-
-```go
-func (p *azureProvider) uploadFileToProvider(ctx context.Context, file *File) (*File, error) {
-    // Implement the logic to upload a file
-}
-
-func (p *azureProvider) downloadFileFromProvider(ctx context.Context, fileId string) ([]byte, error) {
-    // Implement the logic to download a file
-}
-
-func (p *azureProvider) removeFileFromProvider(ctx context.Context, fileId string) error {
-    // Implement the logic to remove a file
-}
-```
-
-5. Add any new secrets in the `env.go` file.
-
-6. Fill in the `docker-compose.yml` file with the new provider configuration.
-
-```yaml
-services:
-  server:
-    environment:
-      FILE_PROVIDER: azure
-      AZURE_ACCOUNT_NAME: ${AZURE_ACCOUNT_NAME}
-      AZURE_ACCOUNT_KEY: ${AZURE_ACCOUNT_KEY}
-      AZURE_CONTAINER_NAME: ${AZURE_CONTAINER_NAME}
-```
-
 ## Getting Secrets
 
 ### Cloudflare R2
@@ -142,6 +80,14 @@ services:
 5. Go to the [IAM & Admin](https://console.cloud.google.com/iam-admin) dashboard.
 6. Create a new service account with `Storage Admin` role.
 7. Download the JSON key and set the `GOOGLE_APPLICATION_CREDENTIALS` in the `docker-compose.yml` file.
+
+### Azure Blob Storage
+
+1. Go to the [Azure Portal](https://portal.azure.com/) and create an account.
+2. Create a new storage account.
+3. Go to the storage account and create a new container.
+4. Go to the `Access keys` section and copy the `Connection string`.
+5. Set the `AZBLOB_ACCOUNT_NAME` and `AZBLOB_ACCOUNT_KEY` in the `docker-compose.yml` file.
 
 ## Need help?
 
