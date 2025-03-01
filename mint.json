@@ -67,10 +67,6 @@
         "guidelines/kubernetes",
         "guidelines/cicd"
       ]
-    },
-    {
-      "group": "Production",
-      "pages": ["production/self-hosted", "production/flyio"]
     }
   ],
   "footerSocials": {
