@@ -1,5 +1,41 @@
 ---
 title: 'CI/CD'
-description: 'Continuous Integration and Continuous Deployment'
+description: 'CI/CD with GitHub Actions'
 icon: 'robot'
 ---
+
+## Workflow Overview
+
+1. **Linting**
+    - Before each section of the pipeline runs, we perform linting for various technologies (Vue, Svelte, Next.js, Go).
+    - This helps catch issues early and maintain consistent code quality.
+
+2. **Database Migration**
+    - Before deploying the `service-go-user`, a database migration step runs to apply any new schema changes using the [AtlasGo](https://atlasgo.io/docs) tool.
+
+3. **Build & Deployment**
+    - Our build scripts automatically create Docker images, push them to the GitHub Container Registry, and deploy them to Kubernetes clusters.
+    - We support two environments:
+        - Staging: Triggered when a **release** is marked as a **pre-release**.
+        - Production: Triggered when a full **release** is created.
+
+## Required Secrets
+
+Only two secrets are required for deployments:
+
+- `KUBE_CONFIG`: The Kubernetes configuration file encoded in Base64. Generate it with:
+
+```bash
+    cat ~/.kube/config | base64
+```
+- `DATABASE_URL`: The connection string for the database.
+
+## Set up Docker Images
+
+To allow GitHub Actions to access your Docker images:
+
+- Go to https://github.com/OWNER/packages and locate your Docker images.
+- For each image, navigate to **Package Settings** → **Manage Actions Access**.
+- Click Add Repository, select your repo, and change the access level to **Write**.
+
+This ensures that GitHub Actions can pull and push Docker images during the CI/CD process.
