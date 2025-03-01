@@ -64,7 +64,7 @@
         "guidelines/security",
         "guidelines/errors",
         "guidelines/protocol",
-        "guidelines/deployment",
+        "guidelines/kubernetes",
         "guidelines/cicd"
       ]
     },
