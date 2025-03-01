@@ -1,0 +1,195 @@
+---
+title: 'Deployment'
+description: 'Deploy your application using Kubernetes'
+icon: 'server'
+---
+
+## Overview
+
+- This guide details how to deploy a GoFast application on a Kubernetes cluster with monitoring capabilities.
+- The setup assumes a two-server configuration: one for production and one for staging.
+- Optionaly, you can add worker nodes to the cluster.
+- Docker images are stored in the GitHub Container Registry.
+
+Additional note, all resources are build for the ARM64 architecture. If you are using a different architecture, please update the Dockerfiles and the deployment scripts accordingly.
+
+**Important**: Run all commands from the `kube` directory.
+
+## Prerequisites
+
+Ensure the following tools are installed:
+- [Docker](https://docs.docker.com/get-docker/)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [Helm](https://helm.sh/docs/intro/install/)
+- Optional: [k9s](https://k9scli.io/topics/install/)
+
+You’ll need two servers with root access:
+- Production server (e.g. `12.34.56.78`)
+- Staging server (e.g. `23.45.67.89`)
+
+Set up domains/subdomains:
+- User Service (e.g. `user.gofast.live`)
+- User RC Service (e.g. `user-rc.gofast.live`)
+- Admin Service (e.g. `admin.gofast.live`)
+- Admin RC Service (e.g. `admin-rc.gofast.live`)
+- Client Service (e.g. `app.gofast.live`)
+- Client RC Service (e.g. `app-rc.gofast.live`)
+- Monitoring (e.g. `grafana.gofast.live`)
+
+These domains should resolve to the corresponding server IP addresses.
+
+Production:
+```
+user.gofast.live -> 12.34.56.78
+admin.gofast.live -> 12.34.56.78
+app.gofast.live -> 12.34.56.78
+grafana.gofast.live -> 12.34.56.78
+```
+
+Staging:
+```
+user-rc.gofast.live -> 23.45.67.89
+admin-rc.gofast.live -> 23.45.67.89
+app-rc.gofast.live -> 23.45.67.89
+grafana-rc.gofast.live -> 23.45.67.89
+```
+
+
+Include AAAA records if using IPv6.
+
+## Build Docker Images
+
+If you don’t have a builder, create one:
+```bash
+docker buildx create --use
+```
+
+Build the Docker images for each service:
+```bash
+cd ../your-service
+docker buildx build --platform $BUILD_PLATFORM -t ghcr.io/$GITHUB_REPO/$IMAGE_NAME:latest --push .
+```
+Replace:
+- `$BUILD_PLATFORM` with the target platform (e.g., linux/amd64, linux/arm64)
+- `$GITHUB_REPO` with your GitHub Repo (e.g., gofast-live/gofast-app)
+- `$IMAGE_NAME` with the image name (e.g., service-user, service-admin-rc)
+
+### Set up Docker Images (Optional - For CI/CD)
+
+Go `https://github.com/OWNER/packages` and connect the images to the repository.
+Then for each image, go to Package Settings -> Manage Actions Access -> Add the repository -> Change to Write.
+
+## Configure Environment Variables
+
+Copy the example `.env` files and populate the variables, or pass them as arguments when running scripts.
+```bash
+cp .env.setup.example .env.setup # For setting up the Kubernetes cluster and GitHub registry
+cp .env.service.example .env.production # For production environment
+cp .env.service.example .env.staging # For staging environment
+```
+
+Ensure the repo address and image names match those used when building the Docker images.
+
+## Install Kubernetes Cluster
+
+Run the following command to set up the Kubernetes cluster:
+```bash
+YOUR_SECRETS \
+sh setup_kube.sh
+```
+
+Monitor the cluster using the k9s tool:
+```bash
+k9s
+```
+
+## Context Switching
+
+All the following steps must be executed for each context (production and staging). The context names, `PRODUCTION_NAME` and `STAGING_NAME`, are defined in the `.env` file.
+
+To switch contexts, run:
+```bash
+kubectl config use-context YOUR_CONTEXT
+```
+
+## Authorize GitHub Container Registry
+
+Generate a personal access token with `read:packages` and `write:packages` scopes from [GitHub Settings](https://github.com/settings/tokens). 
+Save it as `GITHUB_ACCESS_TOKEN` env and run:
+```bash
+YOUR_SECRETS \
+sh setup_docker.sh
+```
+
+## Deploy PostgreSQL (Optional)
+
+**WARNING**: This will add postgres to your default cluster.
+
+Deploy a PostgreSQL database using CloudNativePG:
+```bash
+sh deploy_postgres.sh
+```
+The script outputs the database connection string. Copy the password and save it in `.env` or as a secret.
+
+## Deploy the Application
+
+```bash
+YOUR_SECRETS \
+sh deploy_app.sh (./.env.production | ./.env.staging)
+```
+
+Check deployment status with:
+```bash
+kubectl get pods
+# or
+k9s
+```
+
+This scripts also runs the migration job using [AtlasGo](https://atlasgo.io/docs) versus Postgres. Modify the script to use a different database provider.
+
+It script will also output `DATABASE_URL` which is needed for GitHub Actions.
+
+## Deploy Monitoring Stack
+
+Set up the monitoring stack:
+```bash
+YOUR_SECRETS \
+sh deploy_monitoring.sh (./.env.production | ./.env.staging)
+```
+This scripts outputs the Grafana admin password.
+
+## Deploy a New Version
+
+To deploy an updated version, build and push new images, then restart the deployments:
+
+```bash
+kubectl rollout restart deployment service-user
+kubectl rollout restart deployment service-admin
+kubectl rollout restart deployment service-client
+```
+
+## Auto Deploy using GitHub Actions
+
+1. Switch to the desired context:
+```bash
+kubectl config use-context YOUR_CONTEXT
+```
+
+2. Encode the kubeconfig file:
+```bash
+cat ~/.kube/config | base64
+```
+
+2. On the GitHub repository, go to Settings > Secrets and add `KUBE_CONFIG` with the encoded kubeconfig.
+
+3. Create database url from `postgresql://${POSTGRES_USER}:${POSTGRES_PASS}@${MIGRATION_SERVER_IP}:30432/${POSTGRES_DB}?sslmode=disable` and add it to the GitHub Secrets as `DATABASE_URL`.
+
+3. Modify the `deploy.yml` to match your environments and services.
+
+## Framework Specific Instructions
+
+For the Next.js and Vue.js clients, we need to update the build environment variables.
+
+To deploy a Next.js client, point `NEXT_PUBLIC_USER_URL` inside Dockerfile to your user service URL.
+
+To deploy a Vue.js client, point `VITE_USER_URL` inside Dockerfile to your user service URL.
