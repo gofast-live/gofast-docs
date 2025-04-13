@@ -144,12 +144,12 @@ kubectl rollout restart deployment service-client
 kubectl config use-context YOUR_CONTEXT
 ```
 
-2. Encode the kubeconfig file:
+2. Copy the kubeconfig file:
 ```bash
-cat ~/.kube/config | base64
+cat ~/.kube/config
 ```
 
-2. On the GitHub repository, go to Settings > Secrets and add `KUBE_CONFIG` with the encoded kubeconfig.
+2. On the GitHub repository, go to Settings > Secrets and add `KUBE_CONFIG` with the kubeconfig.
 
 3. Create database url from `postgresql://${POSTGRES_USER}:${POSTGRES_PASS}@${MIGRATION_SERVER_IP}:30432/${POSTGRES_DB}?sslmode=disable` and add it to the GitHub Secrets as `DATABASE_URL`.
 
