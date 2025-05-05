@@ -31,11 +31,11 @@ sh scripts/sqlc.sh
 
 By default, the project uses local **PostgreSQL**. To change the database, you need to modify the following files:
 
-- `scripts/atlas.sh` - change the database connection string and docker dev image - https://atlasgo.io/concepts/dev-database
+- `service-go-user/storage/storage.go` - change the database implementation by commenting/uncommenting the database provider.
 - `service-go-user/storage/sqlc.yaml` - change the database configuration. - https://docs.sqlc.dev/en/stable/tutorials/getting-started-sqlite.html
 - `service-go-user/storage/schema.sql` - change the schema to match the new database.
 - `service-go-user/storage/queries.sql` - change the queries to match the new database.
-- `service-go-user/storage/storage.go` - change the database implementation by commenting/uncommenting the database provider.
+- `scripts/atlas.sh` - change the database connection string and docker dev image - https://atlasgo.io/concepts/dev-database
 
 ## Troubleshooting
 
