@@ -6,13 +6,21 @@ icon: 'server'
 
 ## Overview
 
-- This guide details how to deploy a GoFast application on a Kubernetes cluster with monitoring capabilities.
-- The setup require a server with root access to deploy the Kubernetes cluster.
-- Optionaly, you can add worker nodes to the cluster.
-- Docker images are stored in the GitHub Container Registry.
-- CloudNativePG is used to deploy a PostgreSQL database.
+This document provides a comprehensive guide for deploying the GoFast application onto new servers using Kubernetes. 
+The deployment strategy involves building Docker images, pushing them to the GitHub Container Registry (GHCR), and then deploying these images to a Kubernetes cluster.
 
-Additional note, all resources are build for the ARM64 architecture. If you are using a different architecture, please update the Dockerfiles and the deployment scripts accordingly.
+This guide explains how to set up two separate systems:
+*   **Production** (live for users, called `release`)
+*   **Staging** (for testing, called `release-candidate`)
+
+You'll need to follow this guide's steps twice: once for `release` and once for `release-candidate`. Each will use different settings.
+
+The ultimate aim is to establish a fully automated CI/CD pipeline leveraging GitHub Actions.
+This pipeline will automatically build, test, and deploy the GoFast application based on the type of GitHub Release created:
+-   Creating a **Release** (e.g., `v1.0.0`) in the GitHub repository triggers a deployment to the `release` (production) environment.
+-   Creating a **Pre-release** (e.g., `v1.0.0-rc.1`) triggers a deployment to the `release-candidate` (staging) environment.
+
+The guide is structured into two main phases: setting up the Kubernetes cluster and configuring the GitHub Actions CI/CD pipeline.
 
 **Important**: Run all commands from the `kube` directory.
 
@@ -24,7 +32,7 @@ Ensure the following tools are installed:
 - [Helm](https://helm.sh/docs/intro/install/)
 - Optional: [k9s](https://k9scli.io/topics/install/)
 
-You’ll need server with root access:
+You’ll need a server with root access, accessible via SSH:
 - Production/Staging server (e.g. `12.34.56.78`)
 
 Set up domains/subdomains:
@@ -46,119 +54,93 @@ Include AAAA records if using IPv6.
 
 ## Configure Environment Variables
 
-You've got two options to set the environment variables:
+You have two options to set the environment variables:
 
 1. Fill in the `.env` file with your secrets.
 2. Pass the secrets as environment variables when running the scripts (preferred).
 ```bash
-POSTGRES_USER=your_user \
-POSTGRES_PASS=your_pass \
-sh setup_kube.sh
+GITHUB_CLIENT_ID=your_id \
+GITHUB_CLIENT_SECRET=your_secret \
+... (other variables) \
+sh setup.sh
 ```
 
-## Install Kubernetes Cluster
+## Setup Kubernetes Cluster
 
-Run the following command to set up the Kubernetes cluster:
+1. **Run the setup script**:
 ```bash
-sh setup_kube.sh
+sh setup.sh
 ```
 
-Monitor the cluster using the k9s tool:
-```bash
-k9s
-```
+This script will:
+- Install K3s on the server.
+- Configure the Kubernetes cluster and set up the kubeconfig file.
+- Install Helm and the necessary charts.
+- Create the necessary Kubernetes secrets.
+- Set up the PostgreSQL database (CloudNativePG) with an automated backup system.
+- Set up Monitoring using:
+    - OpenTelemetry Auto Instrumentation for Go
+    - Opentelemetry Collector
+    - Victoriametrics
+    - Victorialogs
+    - Tempo
+    - Grafana with pre-configured datasources and dashboards.
+- Set up the PubSub service.
+- Set up the CronJob service.
+- Deploy the User, Admin, and Client services and their respective Ingress resources.
 
-## Authorize GitHub Container Registry
+### Important Note
+The deployment will fail, because we didn't build the images yet. The CI/CD pipeline will handle this automatically in the next step.
 
-Generate a personal access token with `read:packages` and `write:packages` scopes from [GitHub Settings](https://github.com/settings/tokens). 
-Save it as `GITHUB_ACCESS_TOKEN` env and run:
-```bash
-sh setup_docker.sh
-```
+## Setup GitHub Actions CI/CD
 
-## Build Docker Images
+1. In your GitHub repository, navigate to Settings > Environments and click 'New environment' to create two environments:
+   - `release` for production environment
+   - `release-candidate` for staging environment
 
-If you don’t have a builder, create one:
-```bash
-docker buildx create --use
-```
-
-Build the Docker images for each service:
-```bash
-cd ../your-service
-docker buildx build --platform $BUILD_PLATFORM -t ghcr.io/$GITHUB_REPO/$IMAGE_NAME:latest --push .
-```
-Replace:
-- `$BUILD_PLATFORM` with the target platform (e.g., linux/amd64, linux/arm64)
-- `$GITHUB_REPO` with your GitHub Repo (e.g., gofast-live/gofast-app)
-- `$IMAGE_NAME` with the image name (e.g., service-user, service-admin-rc)
-
-### Set up Docker Images (Optional - For CI/CD)
-
-Go `https://github.com/OWNER/packages` and connect the images to the repository.
-Then for each image, go to Package Settings -> Manage Actions Access -> Add the repository -> Change to Write.
-
-## Deploy PostgreSQL
-
-This will add postgres to your cluster with a migration job and a backup job.
-Deploy a PostgreSQL database using CloudNativePG:
-```bash
-sh deploy_postgres.sh
-```
-
-## Deploy the Application
-
-```bash
-sh deploy_app.sh
-```
-
-Check deployment status with:
-```bash
-kubectl get pods
-# or
-k9s
-```
-
-## Deploy Monitoring Stack
-
-Set up the monitoring stack:
-```bash
-sh deploy_monitoring.sh
-```
-This scripts outputs the Grafana admin password.
-
-## Deploy a New Version
-
-To deploy an updated version, build and push new images, then restart the deployments:
-
-```bash
-kubectl rollout restart deployment service-user
-kubectl rollout restart deployment service-admin
-kubectl rollout restart deployment service-client
-```
-
-## Auto Deploy using GitHub Actions
-
-1. Switch to the desired context:
+2. Make sure you are using the correct context:
 ```bash
 kubectl config use-context YOUR_CONTEXT
 ```
 
-2. Copy the kubeconfig file:
+3. Copy the kubeconfig file:
 ```bash
-cat ~/.kube/config
+cat $HOME/.kube/config
 ```
 
-2. On the GitHub repository, go to Settings > Secrets and add `KUBE_CONFIG` with the kubeconfig.
+4. Paste the kubeconfig file into the `KUBE_CONFIG` secret.
 
-3. Create database url from `postgresql://${POSTGRES_USER}:${POSTGRES_PASS}@${MIGRATION_SERVER_IP}:30432/${POSTGRES_DB}?sslmode=disable` and add it to the GitHub Secrets as `DATABASE_URL`.
+5. Save these secrets and GitHub environment variables in the GitHub repository:
+   - `DB_NAME`, `DB_USER`, `DB_PASSWORD`
+   - `PRIVATE_KEY_PEM` and `PUBLIC_KEY_PEM` (generated using `scripts/keys.sh`)
 
-3. Modify the `deploy.yml` to match your environments and services.
+6. Modify the `.github/workflows/release.yml` to match your environments and services.
 
-## Framework Specific Instructions
+7. Ensure the image names used when running `kube/setup.sh` match those defined in the `.github/workflows/release.yml` file.
+
+## Deploy
+
+With the setup complete, the CI/CD pipeline will automatically build the images and deploy them to the Kubernetes cluster.
+To trigger a deployment, create a new **Release** or **Pre-release** in your GitHub repository, as detailed in the Overview.
+
+### Framework Specific Instructions
 
 For the Next.js and Vue.js clients, we need to update the build environment variables.
 
-To deploy a Next.js client, point `NEXT_PUBLIC_USER_URL` inside Dockerfile to your user service URL.
+- NEXT_PUBLIC_CLIENT_URL
+- NEXT_PUBLIC_USER_URL
+- VITE_CLIENT_URL
+- VITE_USER_URL
 
-To deploy a Vue.js client, point `VITE_USER_URL` inside Dockerfile to your user service URL.
+### Google Cloud SQL Setup
+
+1. Go to the Google Cloud Console, `IAM & Admin > Service Accounts`, and create a service account with the `Cloud SQL Client` role.
+2. Create and download the service account key, save it as `kube/gcp-sa-key.json`. Add the key to your GitHub repository secrets as `GCP_SA_KEY`.
+3. Enable the `Cloud SQL Admin API`.
+4. Go to `Cloud SQL > Instances`, create a new instance, and select `PostgreSQL` as the database type.
+5. Create a PostgreSQL database and user. Save the database name, user, and password as `DB_NAME`, `DB_USER`, and `DB_PASSWORD` respectively.
+6. Copy the SQL instance connection name (e.g. `project-id:region:instance-name`) as `CLOUD_SQL_CONNECTION_NAME`.
+
+- `kube/setup.sh` - Uncomment the Google Cloud SQL secrets and comment the CloudNativePG secrets.
+- `kube/config/service-user.yaml` - Uncomment the Google SQL Proxy configuration.
+- `.github/workflows/migration.yml` - Uncomment the Google Cloud SQL section and comment the CloudNativePG section.
