@@ -8,34 +8,24 @@ icon: "database"
 
 - Database Migration: [AtlasGo](https://atlasgo.io/docs)
 - SQL generation: [sqlc](https://sqlc.dev)
-- Database: [PostgreSQL](https://www.postgresql.org/), [Turso](https://turso.tech/), or [SQLite](https://www.sqlite.org/index.html)
+- Database: [PostgreSQL](https://www.postgresql.org/), [SQLite](https://www.sqlite.org/index.html), or [Turso](https://turso.tech/)
 
 ## Basic Flow
 
 1. Spin up the docker compose.
-2. Make changes to the `service-go-user/storage/schema.sql` file.
+2. Make changes to the `service-core/storage/schema.sql` file.
 3. Run **AtlasGo** migration:
 
 ```bash
 sh scripts/atlas.sh
 ```
 
-4. Modify `service-go-user/storage/queries.sql` file.
+4. Modify `service-core/storage/queries.sql` file.
 5. Run **sqlc** to generate the SQL code:
 
 ```bash
 sh scripts/sqlc.sh
 ```
-
-## Change Database
-
-By default, the project uses local **PostgreSQL**. To change the database, you need to modify the following files:
-
-- `service-go-user/storage/storage.go` - change the database implementation by commenting/uncommenting the database provider.
-- `service-go-user/storage/sqlc.yaml` - change the database configuration. - https://docs.sqlc.dev/en/stable/tutorials/getting-started-sqlite.html
-- `service-go-user/storage/schema.sql` - change the schema to match the new database.
-- `service-go-user/storage/queries.sql` - change the queries to match the new database.
-- `scripts/atlas.sh` - change the database connection string and docker dev image - https://atlasgo.io/concepts/dev-database
 
 ## Troubleshooting
 
@@ -43,11 +33,11 @@ By default, the project uses local **PostgreSQL**. To change the database, you n
 
 ```
     volumes:
-      - ./go:/server
-      - /server/storage/db/
+      - ./service-code:/serivce
+      - /serivce/storage/
     environment:
       DB_PROVIDER: sqlite
-      SQLITE_FILE: /server/storage/db/local.db
+      SQLITE_FILE: /service/storage/data.db
 ```
 
 ## Need help?
