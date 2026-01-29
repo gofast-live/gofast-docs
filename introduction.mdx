@@ -35,7 +35,7 @@ GoFast is powered by the CLI that will guide you through the configuration:
 - HTTP and gRPC
 - OAuth flow without any external provider + Magic Links
 - Payments with secure webhooks using Stripe or Lemon Squeezy
-- Emails sending using Postmark, Sengrid, Resend, or AWS SES
+- Emails sending using Postmark, SendGrid, Resend, or AWS SES
 - Files storage using Cloudflare R2, AWS S3, Google Cloud Storage, or Azure Blob Storage
 - Proper CI/CD setup using GitHub Actions, with auto releases
 - Grafana Loki + Prometheus Monitoring
@@ -63,7 +63,7 @@ Start using GoFast in just few clicks, use the GoFast CLI that will guide you th
     icon="screwdriver-wrench"
     href="/quickstart"
   >
-    Start building awesome aplications in under 5 minutes
+    Start building awesome applications in under 5 minutes
   </Card>
   <Card
     title="GoFast CLI"
@@ -76,20 +76,20 @@ Start using GoFast in just few clicks, use the GoFast CLI that will guide you th
 
 ## Configuration
 
-Choose excatly what you need
+Choose exactly what you need
 
 <CardGroup cols={2}>
   <Card
     title="Frontend"
     icon="browser"
-    href="/configuration/frontend"
+    href="/guidelines/frontend"
   >
     Choose between SvelteKit or NextJS
   </Card>
   <Card
     title="Protocol"
     icon="webhook"
-    href="/configuration/protocol"
+    href="/guidelines/protocol"
   >
     Choose between HTTP or gRPC implementation
   </Card>
@@ -126,13 +126,13 @@ Choose excatly what you need
     icon="files"
     href="/configuration/files"
   >
-    Choose between Cloudfalre R2, AWS S3, or Google Cloud Storage
+    Choose between Cloudflare R2, AWS S3, or Google Cloud Storage
   </Card>
   <Card
-    title="Monitoring"
-    icon="bell"
-    href="/configuration/monitoring"
+    title="Deployment"
+    icon="server"
+    href="/configuration/deployment"
   >
-    Monitor your application using Grafana + Loki + Prometheus Stack
+    Choose your deployment and monitoring strategy
   </Card>
 </CardGroup>
